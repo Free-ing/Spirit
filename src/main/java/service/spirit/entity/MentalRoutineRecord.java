@@ -3,13 +3,14 @@ package service.spirit.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import service.spirit.base.BaseEntity;
 
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class MentalRoutineRecord {
+public class MentalRoutineRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

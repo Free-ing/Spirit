@@ -4,18 +4,19 @@ package service.spirit.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.data.jpa.repository.support.JpaRepositoryImplementation;
+import lombok.Setter;
 
-import javax.swing.*;
 import java.time.LocalTime;
 
-public class SpiritDto {
+public class MentalDto {
 
     @Getter
     @Builder
+    @Setter
     @AllArgsConstructor
-    public static class spiritRoutineDto{
+    public static class mentalRoutineDto{
         private String routineName;
+        private Long userId;
         private String imageUrl;
         private Boolean monday;
         private Boolean tuesday;
@@ -26,6 +27,7 @@ public class SpiritDto {
         private Boolean sunday;
         private LocalTime startTime;
         private LocalTime endTime;
+        private String explanation;
 
     }
 
