@@ -1,6 +1,7 @@
 package service.spirit.converter;
 
-import service.spirit.dto.response.MentalDto;
+import service.spirit.dto.request.MentalDto;
+import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
 
 public class toEntity {
@@ -18,6 +19,16 @@ public class toEntity {
                 .explanation(mentalRoutineDto.getExplanation())
                 .startTime(mentalRoutineDto.getStartTime())
                 .endTime(mentalRoutineDto.getEndTime())
+                .build();
+    }
+
+    public static EmotionalDiary toEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto){
+        return EmotionalDiary.builder()
+                .goodContent(emotionalDiaryDto.getWellDone())
+                .badContent(emotionalDiaryDto.getHardWork())
+                .emotion(emotionalDiaryDto.getEmotion())
+                .getAiLetter(emotionalDiaryDto.getGetAiLetter())
+                .userId(emotionalDiaryDto.getUserId())
                 .build();
     }
 

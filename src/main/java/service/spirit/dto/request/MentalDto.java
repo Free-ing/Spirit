@@ -1,10 +1,11 @@
-package service.spirit.dto.response;
+package service.spirit.dto.request;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import service.spirit.entity.Emotion;
 
 import java.time.LocalTime;
 
@@ -29,6 +30,18 @@ public class MentalDto {
         private LocalTime endTime;
         private String explanation;
 
+    }
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class emotionalDiaryDto{
+        private String wellDone;
+        private String hardWork;
+        private Boolean getAiLetter;
+        private Emotion emotion;
+        private Long userId;
     }
 
 }
