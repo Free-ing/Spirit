@@ -3,6 +3,9 @@ package service.spirit.dto.response;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import service.spirit.entity.Emotion;
+
+import java.time.LocalDate;
 
 public class ResponseMentalDto {
 
@@ -21,4 +24,14 @@ public class ResponseMentalDto {
         private String imageUrl;
         private Long routineId;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class DiaryDateDto{
+        private LocalDate date;
+        private Emotion emotion;
+        private Long diaryId;
+    }
+
 }

@@ -4,13 +4,14 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import service.spirit.base.BaseEntity;
 
 import java.time.LocalDate;
 
 @Getter
 @NoArgsConstructor
 @Entity
-public class EmotionalDiary {
+public class EmotionalDiary extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +19,7 @@ public class EmotionalDiary {
 
     private String goodContent;
     private String badContent;
+    private LocalDate date;
 
     private Long userId;
 

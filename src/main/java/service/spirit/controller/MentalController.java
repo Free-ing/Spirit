@@ -69,6 +69,21 @@ public class MentalController {
     ){
 
         return BaseResponse.onSuccess(mentalQueryService.getSpiritRoutineList(userId));
-
     }
+
+    // Todo: 마음 채우기 루틴 리스트 조회
+    @GetMapping("/emotional-record-list/{userId}")
+    public BaseResponse<List<ResponseMentalDto.DiaryDateDto>> getEmotionalDiaryList(
+            @RequestParam int year,
+            @RequestParam int month,
+            @PathVariable Long userId
+    ){
+        System.out.println(year);
+        System.out.println(month);
+
+        return BaseResponse.onSuccess(mentalQueryService.getDiaryDate(year,month,userId));
+    }
+
+
+
 }
