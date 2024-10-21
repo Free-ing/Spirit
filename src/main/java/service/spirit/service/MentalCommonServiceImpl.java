@@ -42,4 +42,6 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         return emotionalDiary.getId();
     }
 
+
+
 }

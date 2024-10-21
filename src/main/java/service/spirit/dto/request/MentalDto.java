@@ -44,4 +44,12 @@ public class MentalDto {
         private Long userId;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class AiLetterDto{
+        private String wellDone;
+        private String hardWork;
+    }
+
 }

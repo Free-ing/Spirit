@@ -8,4 +8,6 @@ public interface MentalCommonService {
 
     //Todo: 감정일기 작성
     Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto);
+
+    //Todo: 감정일기 작성
 }

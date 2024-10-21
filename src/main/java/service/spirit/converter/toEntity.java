@@ -1,6 +1,7 @@
 package service.spirit.converter;
 
 import service.spirit.dto.request.MentalDto;
+import service.spirit.entity.AiLetter;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
 
@@ -31,5 +32,10 @@ public class toEntity {
                 .userId(emotionalDiaryDto.getUserId())
                 .build();
     }
+
+//    public static AiLetter toAiLetter(String content){
+//        return AiLetter.builder()
+//                .
+//    }
 
 }
