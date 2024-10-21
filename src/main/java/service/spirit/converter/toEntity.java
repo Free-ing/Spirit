@@ -20,6 +20,7 @@ public class toEntity {
                 .explanation(mentalRoutineDto.getExplanation())
                 .startTime(mentalRoutineDto.getStartTime())
                 .endTime(mentalRoutineDto.getEndTime())
+                .status(false)
                 .build();
     }
 

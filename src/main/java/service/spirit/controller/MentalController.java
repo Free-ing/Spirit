@@ -21,7 +21,7 @@ public class MentalController {
     //Todo: 마음채우기 루틴 추가하기
     @PostMapping(value = "/routine/{userId}")
     public BaseResponse<Long> addSpiritRoutine(
-            @RequestPart MentalDto.mentalRoutineDto mentalRoutineDto,
+            @RequestBody MentalDto.mentalRoutineDto mentalRoutineDto,
             @PathVariable Long userId
             ){
         mentalRoutineDto.setUserId(userId);

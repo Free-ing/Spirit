@@ -29,6 +29,7 @@ public class MentalDto {
         private LocalTime startTime;
         private LocalTime endTime;
         private String explanation;
+        private Boolean status;
 
     }
 
