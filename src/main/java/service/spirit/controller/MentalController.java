@@ -1,10 +1,13 @@
 package service.spirit.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
 import service.spirit.base.BaseResponse;
 import service.spirit.dto.request.MentalDto;
+import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.service.MentalCommonService;
+import service.spirit.service.MentalQueryService;
 import service.spirit.service.OpenAiService;
 
 
@@ -17,6 +20,7 @@ public class MentalController {
 
     private final MentalCommonService mentalCommonService;
     private final OpenAiService openAiService;
+    private final MentalQueryService mentalQueryService;
 
     //Todo: 마음채우기 루틴 추가하기
     @PostMapping(value = "/routine/{userId}")
@@ -58,8 +62,13 @@ public class MentalController {
     }
 
 
-//    // Todo: 감정일기에 대한 ai 편지
-//    public BaseResponse<> writeAiLetter(MentalDto){
-//
-//    }
+    // Todo: 마음 채우기 루틴 리스트 조회
+    @GetMapping("/routine-list/{userId}")
+    public BaseResponse<List<ResponseMentalDto.MentalRoutineDto>> getRoutineList(
+            @PathVariable Long userId
+    ){
+
+        return BaseResponse.onSuccess(mentalQueryService.getSpiritRoutineList(userId));
+
+    }
 }

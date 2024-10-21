@@ -35,6 +35,7 @@ public class MentalRoutine extends BaseEntity {
     private Boolean saturday;
     private Boolean sunday;
 
+    private String imageUrl;
     private String explanation;
 
     private Boolean status;
@@ -46,7 +47,7 @@ public class MentalRoutine extends BaseEntity {
     private List<MentalRoutineRecord> mentalRoutineRecordList = new ArrayList<>();
 
     @Builder
-    public MentalRoutine(String metalRoutineName, Long userId, List<MentalRoutineRecord> mentalRoutineRecordList, SpiritType basicService, String explanation, Boolean status, Boolean sunday, Boolean saturday, Boolean thursday, Boolean friday, Boolean wednesday, Boolean tuesday, Boolean monday, LocalTime endTime, LocalTime startTime) {
+    public MentalRoutine(String metalRoutineName, String imageUrl,Long userId, List<MentalRoutineRecord> mentalRoutineRecordList, SpiritType basicService, String explanation, Boolean status, Boolean sunday, Boolean saturday, Boolean thursday, Boolean friday, Boolean wednesday, Boolean tuesday, Boolean monday, LocalTime endTime, LocalTime startTime) {
         this.mentalRoutineName = metalRoutineName;
         this.userId = userId;
         this.mentalRoutineRecordList = mentalRoutineRecordList;
@@ -62,5 +63,6 @@ public class MentalRoutine extends BaseEntity {
         this.monday = monday;
         this.endTime = endTime;
         this.startTime = startTime;
+        this.imageUrl = imageUrl;
     }
 }

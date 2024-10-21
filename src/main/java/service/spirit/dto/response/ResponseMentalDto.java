@@ -12,4 +12,13 @@ public class ResponseMentalDto {
     public static class ResponseAiLetter{
         private String aiLetter;
     }
+
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class MentalRoutineDto{
+        private String hobbyName;
+        private String imageUrl;
+        private Long routineId;
+    }
 }
