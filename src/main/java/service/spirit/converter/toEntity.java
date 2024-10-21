@@ -21,6 +21,7 @@ public class toEntity {
                 .startTime(mentalRoutineDto.getStartTime())
                 .endTime(mentalRoutineDto.getEndTime())
                 .status(false)
+                .imageUrl(mentalRoutineDto.getImageUrl())
                 .build();
     }
 
