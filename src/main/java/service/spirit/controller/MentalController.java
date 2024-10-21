@@ -49,7 +49,6 @@ public class MentalController {
     //Todo: ai 편지 작성
     @PostMapping("/ai/emotional-record/{diaryId}")
     public BaseResponse getAiLetter(
-            @RequestBody MentalDto.AiLetterDto aiLetterDto,
             @PathVariable Long diaryId){
 
         Long aiLetterId =openAiService.writeAiLetter(diaryId);
