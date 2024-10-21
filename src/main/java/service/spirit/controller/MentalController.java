@@ -32,7 +32,7 @@ public class MentalController {
     //Todo: 감정일기 추가하기
     @PostMapping(value = "/emotional-diary/{userId}")
     public BaseResponse<Long> saveEmotionalDiary(
-            @RequestPart MentalDto.emotionalDiaryDto emotionalDiaryDto,
+            @RequestBody MentalDto.emotionalDiaryDto emotionalDiaryDto,
             @PathVariable Long userId
             //            @RequestHeader("Authorization") String authorizationHeader
 
@@ -52,7 +52,7 @@ public class MentalController {
             @RequestBody MentalDto.AiLetterDto aiLetterDto,
             @PathVariable Long diaryId){
 
-        Long aiLetterId =openAiService.writeAiLetter(aiLetterDto,diaryId);
+        Long aiLetterId =openAiService.writeAiLetter(diaryId);
 
         return BaseResponse.onSuccess(aiLetterId);
 
