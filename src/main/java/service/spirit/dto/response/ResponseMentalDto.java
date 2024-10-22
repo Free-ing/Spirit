@@ -45,5 +45,14 @@ public class ResponseMentalDto {
         private Boolean scrap;
     }
 
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class RoutineInfoDto{
+        private String explanation;
+        private String MetalRoutineName;
+    }
+
+
 
 }

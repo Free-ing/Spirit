@@ -86,11 +86,21 @@ public class MentalController {
 
 
     //Todo: 감정일기 조회
-    @GetMapping("/emotional-record/{recordId}")
+    @GetMapping("/emotional-record/{diaryId}")
     public BaseResponse<ResponseMentalDto.EmotionalDiaryDto> getEmotionalRecord(
-            @PathVariable Long recordId
+            @PathVariable Long diaryId
     ){
-        return BaseResponse.onSuccess(mentalQueryService.getEmotionalDiary(recordId));
+        return BaseResponse.onSuccess(mentalQueryService.getEmotionalDiary(diaryId));
+    }
+
+
+    //Todo : 마음채우기 루틴 상세보기
+    @GetMapping("/routine-info/{routineId}")
+    public BaseResponse<ResponseMentalDto.RoutineInfoDto> getRoutineInfo(
+            @PathVariable Long routineId
+    ){
+        ResponseMentalDto.RoutineInfoDto routineInfoDto = mentalQueryService.getRoutineInfo(routineId);
+        return BaseResponse.onSuccess(routineInfoDto);
     }
 
 

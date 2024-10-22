@@ -15,5 +15,6 @@ public class ToDto {
                 .scrap(emotionalDiary.getScrap())
                 .build();
     }
-}
+
+ }
 

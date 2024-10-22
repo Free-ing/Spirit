@@ -48,4 +48,10 @@ public class MentalQueryServiceImpl implements MentalQueryService{
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
         return toEmotionalDiaryDTO(emotionalDiary);
     }
+
+    //Todo: 마음 채우기 루틴 설명 보기
+    @Override
+    public ResponseMentalDto.RoutineInfoDto getRoutineInfo(Long routineId){
+        return mentalRoutineRepository.getRoutineInfo(routineId);
+    }
 }

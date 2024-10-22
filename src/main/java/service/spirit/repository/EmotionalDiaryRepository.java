@@ -12,7 +12,7 @@ import java.util.List;
 @Repository
 public interface EmotionalDiaryRepository extends JpaRepository<EmotionalDiary,Long> {
 
-    @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DiaryDateDto(ed.date, ed.emotion,ed.id) " +
+    @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DiaryDateDto(ed.createdAt, ed.emotion,ed.id) " +
             "FROM EmotionalDiary ed " +
             "WHERE YEAR(ed.createdAt) = :year " +
             "AND MONTH(ed.createdAt) = :month " +
