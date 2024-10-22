@@ -32,6 +32,7 @@ public class toEntity {
                 .emotion(emotionalDiaryDto.getEmotion())
                 .getAiLetter(emotionalDiaryDto.getGetAiLetter())
                 .userId(emotionalDiaryDto.getUserId())
+                .scrap(false)
                 .build();
     }
 

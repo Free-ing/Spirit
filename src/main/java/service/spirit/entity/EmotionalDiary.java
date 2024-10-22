@@ -19,7 +19,6 @@ public class EmotionalDiary extends BaseEntity {
 
     private String goodContent;
     private String badContent;
-    private LocalDate date;
 
     private Long userId;
 
@@ -32,16 +31,19 @@ public class EmotionalDiary extends BaseEntity {
     @JoinColumn(name = "ai_letter_id")
     private AiLetter aiLetter;
 
+    private Boolean scrap;
+
     public void setAiLetter (AiLetter aiLetter){
         this.aiLetter = aiLetter;
     }
 
     @Builder
-    public EmotionalDiary(String goodContent, String badContent, Long userId, Emotion emotion, Boolean getAiLetter) {
+    public EmotionalDiary(String goodContent, Boolean scrap, String badContent, Long userId, Emotion emotion, Boolean getAiLetter) {
         this.goodContent = goodContent;
         this.badContent = badContent;
         this.userId = userId;
         this.emotion = emotion;
         this.getAiLetter = getAiLetter;
+        this.scrap = scrap;
     }
 }

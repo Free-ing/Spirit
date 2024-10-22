@@ -11,4 +11,7 @@ public interface MentalQueryService {
 
     //Todo: 감정일기 존재하는지 여부 조회
     List<ResponseMentalDto.DiaryDateDto> getDiaryDate(int year, int month, Long userId);
+
+    // Todo: 감정일기 상세 조회 기능
+    ResponseMentalDto.EmotionalDiaryDto getEmotionalDiary(Long recordId);
 }

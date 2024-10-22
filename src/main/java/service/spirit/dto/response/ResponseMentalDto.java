@@ -33,5 +33,17 @@ public class ResponseMentalDto {
         private Emotion emotion;
         private Long diaryId;
     }
+    @Getter
+    @AllArgsConstructor
+    @Builder
+    public static class EmotionalDiaryDto{
+        private LocalDate date;
+        private Emotion emotion;
+        private Long diaryId;
+        private String wellDone;
+        private String hardWork;
+        private Boolean scrap;
+    }
+
 
 }

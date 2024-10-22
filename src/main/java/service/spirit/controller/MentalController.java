@@ -85,5 +85,13 @@ public class MentalController {
     }
 
 
+    //Todo: 감정일기 조회
+    @GetMapping("/emotional-record/{recordId}")
+    public BaseResponse<ResponseMentalDto.EmotionalDiaryDto> getEmotionalRecord(
+            @PathVariable Long recordId
+    ){
+        return BaseResponse.onSuccess(mentalQueryService.getEmotionalDiary(recordId));
+    }
+
 
 }
