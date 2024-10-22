@@ -104,4 +104,41 @@ public class MentalController {
     }
 
 
+    //Todo: 감정일기 스크랩하기
+    @PatchMapping("/emotional-records/scrap/{recordId}")
+    public BaseResponse<Long> diaryScrap(
+            @PathVariable Long recordId
+    ){
+        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrap(recordId);
+        return BaseResponse.onSuccess(diaryScrapId);
+    }
+
+    //Todo: 감정일기 스크랩 취소하기
+    @PatchMapping("/emotional-records/scrap-cancel/{recordId}")
+    public BaseResponse<Long> diaryScrapCancel(
+            @PathVariable Long recordId
+    ){
+        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrapCancel(recordId);
+        return BaseResponse.onSuccess(diaryScrapId);
+    }
+
+    //Todo: 마음채우기 루틴 삭제
+    @DeleteMapping("/{routineId}")
+    public BaseResponse<String> deleteMentalRoutine(
+            @PathVariable Long routineId
+    ){
+        mentalCommonService.deleteMentalRoutine(routineId);
+        return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
+    }
+
+    //Todo: 감정일기 삭제
+    @DeleteMapping("/{diaryId}")
+    public BaseResponse<String> deleteEmotionalDiary(
+            @PathVariable Long diaryId
+    ){
+        mentalCommonService.deleteEmotionalDiary(diaryId);
+        return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
+    }
+
+
 }

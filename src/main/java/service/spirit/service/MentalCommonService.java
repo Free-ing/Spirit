@@ -9,5 +9,15 @@ public interface MentalCommonService {
     //Todo: 감정일기 작성
     Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto);
 
-    //Todo: 감정일기 작성
+    //Todo: 감정일기 스크랩하기
+    Long emotionalRecordDiaryScrap(Long recordId);
+
+    //Todo: 감정일기 스크랩 취소
+    Long emotionalRecordDiaryScrapCancel(Long recordId);
+
+    //Todo: 마음 채우기  루틴 삭제
+    void deleteMentalRoutine(Long routineId);
+
+    //Todo: 감정일기 삭제
+    void deleteEmotionalDiary(Long diaryId);
 }

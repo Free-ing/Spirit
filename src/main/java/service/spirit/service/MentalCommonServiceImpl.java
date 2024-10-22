@@ -3,6 +3,8 @@ package service.spirit.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import service.spirit.base.exception.code.RestApiException;
+import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.request.MentalDto;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
@@ -42,6 +44,40 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         return emotionalDiary.getId();
     }
 
+    //Todo: 감정일기 스크랩하기
+    @Override
+    public Long emotionalRecordDiaryScrap(Long recordId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(recordId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
+        emotionalDiary.changeScrap(true);
+        return emotionalDiary.getId();
+    }
+
+    //Todo: 감정일기 스크랩 취소
+    @Override
+    public Long emotionalRecordDiaryScrapCancel(Long recordId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(recordId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
+        emotionalDiary.changeScrap(false);
+        return emotionalDiary.getId();
+    }
+
+    //Todo: 마음 채우기  루틴 삭제
+    @Override
+    public void deleteMentalRoutine(Long routineId){
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
+        mentalRoutineRepository.delete(mentalRoutine);
+    }
+
+    //Todo: 감정일기 삭제
+    @Override
+    public void deleteEmotionalDiary(Long diaryId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(diaryId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
+
+        emotionalDiaryRepository.delete(emotionalDiary);
+    }
 
 
 }
