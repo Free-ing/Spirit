@@ -1,5 +1,6 @@
 package service.spirit.controller;
 
+import groovy.lang.DelegatesTo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.web.bind.annotation.*;
@@ -196,7 +197,7 @@ public class MentalController {
     }
 
     //Todo: 루틴 일정 수행 완료 취소
-    @PatchMapping("/{routineRecordId}/complete")
+    @PatchMapping("/{routineRecordId}/cancel")
     public BaseResponse<String> cancelRoutineRecord(
             @PathVariable Long routineRecordId
     ){
@@ -204,5 +205,13 @@ public class MentalController {
         return BaseResponse.onSuccess("성공적으로 루틴을 취소하였습니다.");
     }
 
+    //Todo: 회원의 모든 마음채우기 데이터 삭제
+    @DeleteMapping("/users/{userId}")
+    public BaseResponse<String> deleteSpiritData(
+            @PathVariable Long userId
+    ){
+        mentalCommonService.deleteSpiritDate(userId);
+        return BaseResponse.onSuccess("성공적으로 회원의 마음채우기 모든 데이터를 삭제하였습니다.");
+    }
 
 }

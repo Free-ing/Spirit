@@ -20,4 +20,6 @@ public interface EmotionalDiaryRepository extends JpaRepository<EmotionalDiary,L
     List<ResponseMentalDto.DiaryDateDto> getRecordListByDate(@Param("year") int year,
                                                              @Param("month") int month,
                                                              @Param("userId") Long userId);
+
+    List<EmotionalDiary> findByUserId(Long userId);
 }

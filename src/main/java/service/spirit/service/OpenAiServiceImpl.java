@@ -63,6 +63,7 @@ public class OpenAiServiceImpl implements OpenAiService {
 
         //ai 편지 저장
         aiLetterRepository.save(aiLetter);
+        emotionalDiary.addAiLetter(aiLetter);
 
         return aiLetter.getId();
 

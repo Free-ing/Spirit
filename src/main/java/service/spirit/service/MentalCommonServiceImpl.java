@@ -17,6 +17,7 @@ import service.spirit.repository.MentalRoutineRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static service.spirit.converter.toEntity.toEmotionalDiary;
@@ -161,6 +162,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_RECORD_NOT_FOUND));
         mentalRoutineRecord.updateCompleteAndCompleteDate(false, null);
 
+    }
+
+    //Todo: 회원의 모든 마음채우기 데이터 삭제
+    @Override
+    public void deleteSpiritDate(Long userId){
+        List<MentalRoutine> mentalRoutines = mentalRoutineRepository.findByUserId(userId);
+        List<EmotionalDiary> emotionalDiaries = emotionalDiaryRepository.findByUserId(userId);
+
+        mentalRoutineRepository.deleteAll(mentalRoutines);
+        emotionalDiaryRepository.deleteAll(emotionalDiaries);
     }
 
 

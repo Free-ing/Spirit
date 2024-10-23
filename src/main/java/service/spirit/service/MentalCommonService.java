@@ -40,4 +40,7 @@ public interface MentalCommonService {
 
     //Todo: 마음 채우기 일정 수행 완료 취소
     void cancelRoutine(Long routineRecordId);
+
+    //Todo: 회원의 모든 마음채우기 데이터 삭제
+    void deleteSpiritDate(Long userId);
 }

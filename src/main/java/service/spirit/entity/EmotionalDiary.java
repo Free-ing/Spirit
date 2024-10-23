@@ -50,4 +50,9 @@ public class EmotionalDiary extends BaseEntity {
     public void changeScrap(Boolean scrap){
         this.scrap = scrap;
     }
+
+    public void addAiLetter(AiLetter aiLetter){
+        this.aiLetter = aiLetter;
+    }
+
 }
