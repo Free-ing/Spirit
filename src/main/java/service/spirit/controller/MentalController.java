@@ -11,6 +11,7 @@ import service.spirit.service.MentalQueryService;
 import service.spirit.service.OpenAiService;
 
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -160,5 +161,29 @@ public class MentalController {
     }
 
     //Todo: 마음채우기 루틴 켜기
+    @PatchMapping("/{routineId}/on")
+    public BaseResponse<String> onMentalRoutine(
+            @RequestParam int month,
+            @RequestParam int day,
+            @PathVariable Long routineId
+    ){
+        int year = LocalDate.now().getYear();
+        LocalDate date = LocalDate.of(year,month,day);
+        mentalCommonService.onMentalRoutine(routineId,date);
+        return BaseResponse.onSuccess("성공적으로 루틴 일정을 켰습니다.");
+    }
+    //Todo: 마음채우기 루틴 켜기
+    @PatchMapping("/{routineId}/off")
+    public BaseResponse<String> offMentalRoutine(
+            @RequestParam int month,
+            @RequestParam int day,
+            @PathVariable Long routineId
+    ){
+
+        int year = LocalDate.now().getYear();
+        LocalDate date = LocalDate.of(year,month,day);
+        mentalCommonService.offMentalRoutine(routineId,date);
+        return BaseResponse.onSuccess("성공적으로 루틴 일정을 껐습니다.");
+    }
 
 }

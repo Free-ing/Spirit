@@ -67,7 +67,6 @@ public class MentalRoutine extends BaseEntity {
         this.imageUrl = imageUrl;
     }
 
-    @Builder
     public void update(MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto) {
         this.mentalRoutineName = mentalRoutineUpdateDto.getMetalRoutineName();
         this.explanation = mentalRoutineUpdateDto.getExplanation();
@@ -81,5 +80,9 @@ public class MentalRoutine extends BaseEntity {
         this.endTime = mentalRoutineUpdateDto.getEndTime();
         this.startTime = mentalRoutineUpdateDto.getStartTime();
         this.imageUrl = mentalRoutineUpdateDto.getImageUrl();
+    }
+
+    public void onMentalRoutine(){
+        this.status = true;
     }
 }

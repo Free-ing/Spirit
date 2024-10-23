@@ -52,6 +52,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     //Todo: 마음 채우기 루틴 설명 보기
     @Override
     public ResponseMentalDto.RoutineInfoDto getRoutineInfo(Long routineId){
-        return mentalRoutineRepository.getRoutineInfo(routineId);
+        return mentalRoutineRepository.getRoutineInfo(routineId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
     }
 }

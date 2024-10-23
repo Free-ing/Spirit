@@ -8,6 +8,7 @@ import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.MentalRoutine;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Long> {
@@ -15,5 +16,5 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
 
     @Query("select new service.spirit.dto.response.ResponseMentalDto$RoutineInfoDto(mr.explanation, mr.mentalRoutineName) " +
             "from MentalRoutine mr where mr.Id = :routineId")
-    ResponseMentalDto.RoutineInfoDto getRoutineInfo(Long routineId);
+    Optional<ResponseMentalDto.RoutineInfoDto> getRoutineInfo(Long routineId);
 }
