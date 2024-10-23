@@ -122,9 +122,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
-
         handleRoutineOn(mentalRoutine, today, endOfWeek);
-
 
         mentalRoutineRepository.save(mentalRoutine);
     }
@@ -225,6 +223,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
                             .userId(routine.getUserId())
                             .routineDate(currentDate)
                             .completeDay(null)
+                            .complete(false)
                             .mentalRoutine(routine)
                             .status(true)
                             .build();
