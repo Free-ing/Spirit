@@ -186,4 +186,23 @@ public class MentalController {
         return BaseResponse.onSuccess("성공적으로 루틴 일정을 껐습니다.");
     }
 
+    //Todo: 루틴 일정 수행 완료
+    @PatchMapping("/{routineRecordId}/complete")
+    public BaseResponse<String> completeRoutineRecord(
+            @PathVariable Long routineRecordId
+    ){
+        mentalCommonService.completeRoutine(routineRecordId);
+        return BaseResponse.onSuccess("성공적으로 루틴을 수행하였습니다.");
+    }
+
+    //Todo: 루틴 일정 수행 완료 취소
+    @PatchMapping("/{routineRecordId}/complete")
+    public BaseResponse<String> cancelRoutineRecord(
+            @PathVariable Long routineRecordId
+    ){
+        mentalCommonService.cancelRoutine(routineRecordId);
+        return BaseResponse.onSuccess("성공적으로 루틴을 취소하였습니다.");
+    }
+
+
 }

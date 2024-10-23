@@ -9,6 +9,8 @@ public enum RoutineErrorStatus implements BaseErrorCodeInterface {
     HOBBY_ROUTINE_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "MENTAL_4002", "이미 추가한 취미 루틴입니다."),
     RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4003", "존재하지 않는 취미 기록입니다."),
     ROUTINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4004", "존재하지 않는 루틴입니다."),
+    ROUTINE_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4005", "존재하지 않는 일정입니다."),
+
 
     AI_LETTER_NOT_FOUND(HttpStatus.BAD_REQUEST, "DIARY_4001", "존재하지 않는 ai 편지입니다."),
 

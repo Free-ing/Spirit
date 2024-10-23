@@ -34,4 +34,10 @@ public interface MentalCommonService {
 
     //Todo : 마음 채우기 루틴 off
     void offMentalRoutine(Long routineId, LocalDate today);
+
+    //Todo: 마음 채우기 일정 수행 완료
+    void completeRoutine(Long routineRecordId);
+
+    //Todo: 마음 채우기 일정 수행 완료 취소
+    void cancelRoutine(Long routineRecordId);
 }

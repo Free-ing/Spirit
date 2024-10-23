@@ -42,4 +42,9 @@ public class MentalRoutineRecord extends BaseEntity {
     public void updateStatus(Boolean status) {
         this.status = status;
     }
+
+    public void updateCompleteAndCompleteDate(Boolean complete, LocalDate date){
+        this.complete = complete;
+        this.completeDay = date;
+    }
 }

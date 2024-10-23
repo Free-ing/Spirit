@@ -143,6 +143,39 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         mentalRoutineRepository.save(mentalRoutine);
     }
 
+    //Todo: 마음 채우기 일정 수행 완료
+    @Override
+    public void completeRoutine(Long routineRecordId){
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(routineRecordId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_RECORD_NOT_FOUND));
+
+        //루틴 레코드 일정 완료 표시
+        mentalRoutineRecord.updateCompleteAndCompleteDate(true, LocalDate.now());
+
+    }
+
+    //Todo: 마음 채우기 일정 수행 완료 취소
+    @Override
+    public void cancelRoutine(Long routineRecordId){
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(routineRecordId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_RECORD_NOT_FOUND));
+        mentalRoutineRecord.updateCompleteAndCompleteDate(false, null);
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     private void handleRoutineOff(MentalRoutine routine, LocalDate today, LocalDate endOfWeek) {
         LocalDate currentDate = today;
         while (!currentDate.isAfter(endOfWeek)) {
