@@ -10,6 +10,9 @@ public enum RoutineErrorStatus implements BaseErrorCodeInterface {
     RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4003", "존재하지 않는 취미 기록입니다."),
     ROUTINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4004", "존재하지 않는 루틴입니다."),
 
+    AI_LETTER_NOT_FOUND(HttpStatus.BAD_REQUEST, "DIARY_4001", "존재하지 않는 ai 편지입니다."),
+
+
 
 
     USER_CANT_DELETE(HttpStatus.BAD_REQUEST, "USER_4001", "삭제할 대상이 없거나 삭제할 권한이 없습니다.");

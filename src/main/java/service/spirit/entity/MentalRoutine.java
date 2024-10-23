@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import service.spirit.base.BaseEntity;
+import service.spirit.dto.request.MentalDto;
 
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -64,5 +65,21 @@ public class MentalRoutine extends BaseEntity {
         this.endTime = endTime;
         this.startTime = startTime;
         this.imageUrl = imageUrl;
+    }
+
+    @Builder
+    public void update(MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto) {
+        this.mentalRoutineName = mentalRoutineUpdateDto.getMetalRoutineName();
+        this.explanation = mentalRoutineUpdateDto.getExplanation();
+        this.sunday = mentalRoutineUpdateDto.getSunday();
+        this.saturday = mentalRoutineUpdateDto.getSaturday();
+        this.thursday = mentalRoutineUpdateDto.getThursday();
+        this.friday = mentalRoutineUpdateDto.getFriday();
+        this.wednesday = mentalRoutineUpdateDto.getWednesday();
+        this.tuesday = mentalRoutineUpdateDto.getTuesday();
+        this.monday = mentalRoutineUpdateDto.getMonday();
+        this.endTime = mentalRoutineUpdateDto.getEndTime();
+        this.startTime = mentalRoutineUpdateDto.getStartTime();
+        this.imageUrl = mentalRoutineUpdateDto.getImageUrl();
     }
 }

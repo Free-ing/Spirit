@@ -20,4 +20,10 @@ public interface MentalCommonService {
 
     //Todo: 감정일기 삭제
     void deleteEmotionalDiary(Long diaryId);
+
+    //Todo: ai 편지 삭제
+    void deleteAiLetter(Long letterId);
+
+    //Todo : 마음 채우기 수정
+    Long updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto);
 }

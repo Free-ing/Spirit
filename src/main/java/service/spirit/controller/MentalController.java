@@ -103,7 +103,6 @@ public class MentalController {
         return BaseResponse.onSuccess(routineInfoDto);
     }
 
-
     //Todo: 감정일기 스크랩하기
     @PatchMapping("/emotional-records/scrap/{recordId}")
     public BaseResponse<Long> diaryScrap(
@@ -132,7 +131,7 @@ public class MentalController {
     }
 
     //Todo: 감정일기 삭제
-    @DeleteMapping("/{diaryId}")
+    @DeleteMapping("/emotional-diary/{diaryId}")
     public BaseResponse<String> deleteEmotionalDiary(
             @PathVariable Long diaryId
     ){
@@ -140,5 +139,26 @@ public class MentalController {
         return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
     }
 
+    //Todo: ai 편지 삭제
+    @DeleteMapping("/ai/{letterId}")
+    public BaseResponse<String> deleteAiDelete(
+            @PathVariable Long letterId
+    ){
+        mentalCommonService.deleteAiLetter(letterId);
+        return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
+    }
+
+
+    //Todo: 마음채우기 루틴 수정
+    @PutMapping("/{routineId}")
+    public BaseResponse<Long> updateMentalRoutine(
+            @PathVariable Long routineId,
+            @RequestBody MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto
+    ) {
+        mentalCommonService.updateMentalRoutine(routineId, mentalRoutineUpdateDto);
+        return BaseResponse.onSuccess(routineId);
+    }
+
+    //Todo: 마음채우기 루틴 켜기
 
 }

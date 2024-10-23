@@ -55,7 +55,4 @@ public class ResponseMentalDto {
         private String explanation;
         private String MetalRoutineName;
     }
-
-
-
 }

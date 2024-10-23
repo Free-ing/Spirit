@@ -53,4 +53,22 @@ public class MentalDto {
         private String hardWork;
     }
 
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class mentalRoutineUpdateDto{
+        private String metalRoutineName;
+        private String explanation;
+        private Boolean sunday;
+        private Boolean saturday;
+        private Boolean thursday;
+        private Boolean friday;
+        private Boolean wednesday;
+        private Boolean tuesday;
+        private Boolean monday;
+        private LocalTime endTime;
+        private LocalTime startTime;
+        private String imageUrl;
+    }
+
 }

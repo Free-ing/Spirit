@@ -6,8 +6,10 @@ import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.request.MentalDto;
+import service.spirit.entity.AiLetter;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
+import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
 import service.spirit.repository.MentalRoutineRepository;
 
@@ -21,6 +23,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     private final MentalRoutineRepository mentalRoutineRepository;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
+    private final AiLetterRepository aiLetterRepository;
 
     //Todo: 마음 채우기 루틴 설정
     @Override
@@ -79,5 +82,25 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         emotionalDiaryRepository.delete(emotionalDiary);
     }
 
+    //Todo: ai 편지 삭제
+    @Override
+    public void deleteAiLetter(Long letterId){
+        AiLetter aiLetter = aiLetterRepository.findById(letterId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.AI_LETTER_NOT_FOUND));
+
+        aiLetterRepository.delete(aiLetter);
+    }
+
+
+    //Todo : 마음 채우기 수정
+    @Override
+    public Long updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto){
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+                .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
+
+        mentalRoutine.update(mentalRoutineUpdateDto);
+
+        return mentalRoutine.getId();
+    }
 
 }
