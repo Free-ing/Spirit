@@ -33,6 +33,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
                         .hobbyName(mentalRoutine.getMentalRoutineName())
                         .routineId(mentalRoutine.getId())
                         .imageUrl(mentalRoutine.getImageUrl())
+                        .status(mentalRoutine.getStatus())
                         .build())
                 .collect(Collectors.toList());
 
@@ -59,7 +60,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
     }
 
-    //Todo: 월별 루틴 일정 조회
+    //Todo: 일별 루틴 일정 조회
     @Override
     public  List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date, Long userId){
         System.out.println(date);

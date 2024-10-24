@@ -27,6 +27,7 @@ public class ResponseMentalDto {
         private String hobbyName;
         private String imageUrl;
         private Long routineId;
+        private Boolean status;
     }
 
     @Getter
