@@ -96,7 +96,7 @@ public class MentalController {
     }
 
 
-    //Todo : 마음채우기 루틴 상세보기
+    //Todo : 마음채우기 루틴 설명 상세보기
     @GetMapping("/routine-info/{routineId}")
     public BaseResponse<ResponseMentalDto.RoutineInfoDto> getRoutineInfo(
             @PathVariable Long routineId
@@ -202,7 +202,7 @@ public class MentalController {
             @PathVariable Long routineRecordId
     ){
         mentalCommonService.cancelRoutine(routineRecordId);
-        return BaseResponse.onSuccess("성공적으로 루틴을 취소하였습니다.");
+        return BaseResponse.onSuccess("성공적으로 루틴 수행 완료를 취소하였습니다.");
     }
 
     //Todo: 회원의 모든 마음채우기 데이터 삭제
@@ -212,6 +212,15 @@ public class MentalController {
     ){
         mentalCommonService.deleteSpiritDate(userId);
         return BaseResponse.onSuccess("성공적으로 회원의 마음채우기 모든 데이터를 삭제하였습니다.");
+    }
+
+    //Todo: 일별 일정 조회
+    @GetMapping("/{userId}")
+    public BaseResponse<List<ResponseMentalDto.DayRoutineDto>> getDayRoutine(
+            @RequestParam LocalDate date,
+            @PathVariable Long userId
+    ){
+        return BaseResponse.onSuccess(mentalQueryService.getDayRoutine(date, userId));
     }
 
 }

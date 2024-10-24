@@ -7,8 +7,10 @@ import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.repository.EmotionalDiaryRepository;
+import service.spirit.repository.MentalRoutineRecordRepository;
 import service.spirit.repository.MentalRoutineRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +22,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
 
     private final MentalRoutineRepository mentalRoutineRepository;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
+    private final MentalRoutineRecordRepository mentalRoutineRecordRepository;
 
     //Todo: 마음 채우기 루틴 리스트 조회
     @Override
@@ -54,5 +57,15 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     public ResponseMentalDto.RoutineInfoDto getRoutineInfo(Long routineId){
         return mentalRoutineRepository.getRoutineInfo(routineId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
+    }
+
+    //Todo: 월별 루틴 일정 조회
+    @Override
+    public  List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date, Long userId){
+        System.out.println(date);
+        List<ResponseMentalDto.DayRoutineDto> dayRoutineDtoList = mentalRoutineRecordRepository.getDayRoutine(date,userId, true);
+        System.out.println(dayRoutineDtoList);
+        return dayRoutineDtoList;
+
     }
 }

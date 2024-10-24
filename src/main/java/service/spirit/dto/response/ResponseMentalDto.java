@@ -1,10 +1,12 @@
 package service.spirit.dto.response;
 
+import ch.qos.logback.core.joran.event.BodyEvent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import service.spirit.entity.Emotion;
+import service.spirit.entity.SpiritType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -54,5 +56,16 @@ public class ResponseMentalDto {
     public static class RoutineInfoDto{
         private String explanation;
         private String MetalRoutineName;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
+    public static class DayRoutineDto{
+        private Long id;
+        private Boolean complete;
+        private String routineName;
+        private SpiritType basicService;
     }
 }

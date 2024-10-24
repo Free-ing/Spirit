@@ -3,6 +3,7 @@ package service.spirit.service;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.MentalRoutine;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public interface MentalQueryService {
@@ -17,4 +18,7 @@ public interface MentalQueryService {
 
     //Todo: 마음 채우기 루틴 설명 보기
     ResponseMentalDto.RoutineInfoDto getRoutineInfo(Long routineId);
+
+    //Todo: 월별 루틴 일정 조회
+    List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date,Long userId);
 }
