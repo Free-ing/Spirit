@@ -32,7 +32,8 @@ public class MentalRoutineRecord extends BaseEntity {
 
     @Builder
     public MentalRoutineRecord(Boolean complete ,LocalDate routineDate,Boolean status, Long userId, LocalDate completeDay, MentalRoutine mentalRoutine) {
-       this.routineDate = routineDate;
+        this.routineDate = routineDate;
+        this.complete = complete;
         this.status =status;
         this.userId = userId;
         this.completeDay = completeDay;

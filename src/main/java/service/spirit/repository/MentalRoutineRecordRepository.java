@@ -17,7 +17,9 @@ public interface MentalRoutineRecordRepository extends JpaRepository<MentalRouti
             Long userId
     );
 
-    @Query("select new service.spirit.dto.response.ResponseMentalDto$DayRoutineDto(mr.id, mr.complete, mr.mentalRoutine.mentalRoutineName, mr.mentalRoutine.basicService) " +
+    @Query("select new service.spirit.dto.response.ResponseMentalDto$DayRoutineDto(mr.mentalRoutine.mentalRoutineName,mr.mentalRoutine.imageUrl,mr.mentalRoutine.Id, mr.mentalRoutine.monday, " +
+            "mr.mentalRoutine.tuesday, mr.mentalRoutine.wednesday, mr.mentalRoutine.thursday, mr.mentalRoutine.friday,mr.mentalRoutine.saturday, mr.mentalRoutine.sunday," +
+            "mr.mentalRoutine.status, mr.mentalRoutine.startTime, mr.mentalRoutine.endTime, mr.mentalRoutine.explanation,mr.mentalRoutine.basicService,mr.id, mr.complete)"+
             "from MentalRoutineRecord mr where mr.routineDate =:date and mr.status =:status and mr.userId =:userId")
     List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date, Long userId ,Boolean status);
 

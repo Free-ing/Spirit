@@ -76,9 +76,24 @@ public class ResponseMentalDto {
     @NoArgsConstructor
     @Builder
     public static class DayRoutineDto{
-        private Long id;
-        private Boolean complete;
-        private String routineName;
+        private String Name;
+        private String imageUrl;
+        private Long routineId;
+        private Boolean monthday;
+        private Boolean tuesday;
+        private Boolean wednesday;
+        private Boolean thursday;
+        private Boolean friday;
+        private Boolean saturday;
+        private Boolean sunday;
+        private Boolean status;
+        private LocalTime startTime;
+        private LocalTime endTime;
+        private String explanation;
         private SpiritType basicService;
+
+        private Long recordId;
+        private Boolean complete;
+
     }
 }
