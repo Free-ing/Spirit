@@ -34,6 +34,16 @@ public class MentalQueryServiceImpl implements MentalQueryService{
                         .routineId(mentalRoutine.getId())
                         .imageUrl(mentalRoutine.getImageUrl())
                         .status(mentalRoutine.getStatus())
+                        .monthday(mentalRoutine.getMonday())
+                        .tuesday(mentalRoutine.getTuesday())
+                        .wednesday(mentalRoutine.getWednesday())
+                        .thursday(mentalRoutine.getThursday())
+                        .friday(mentalRoutine.getFriday())
+                        .saturday(mentalRoutine.getSaturday())
+                        .sunday(mentalRoutine.getSunday())
+                        .startTime(mentalRoutine.getStartTime())
+                        .endTime(mentalRoutine.getEndTime())
+                        .explanation(mentalRoutine.getExplanation())
                         .build())
                 .collect(Collectors.toList());
 

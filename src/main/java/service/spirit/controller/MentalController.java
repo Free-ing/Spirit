@@ -69,7 +69,6 @@ public class MentalController {
     public BaseResponse<List<ResponseMentalDto.MentalRoutineDto>> getRoutineList(
             @PathVariable Long userId
     ){
-
         return BaseResponse.onSuccess(mentalQueryService.getSpiritRoutineList(userId));
     }
 
