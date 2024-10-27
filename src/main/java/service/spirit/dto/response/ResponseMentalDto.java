@@ -26,10 +26,10 @@ public class ResponseMentalDto {
     @AllArgsConstructor
     @Builder
     public static class MentalRoutineDto{
-        private String hobbyName;
+        private String spiritName;
         private String imageUrl;
         private Long routineId;
-        private Boolean monthday;
+        private Boolean monday;
         private Boolean tuesday;
         private Boolean wednesday;
         private Boolean thursday;

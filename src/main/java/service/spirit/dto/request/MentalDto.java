@@ -57,7 +57,7 @@ public class MentalDto {
     @Builder
     @AllArgsConstructor
     public static class mentalRoutineUpdateDto{
-        private String metalRoutineName;
+        private String spiritName;
         private String explanation;
         private Boolean sunday;
         private Boolean saturday;

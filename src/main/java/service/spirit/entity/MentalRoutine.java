@@ -68,7 +68,7 @@ public class MentalRoutine extends BaseEntity {
     }
 
     public void update(MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto) {
-        this.mentalRoutineName = mentalRoutineUpdateDto.getMetalRoutineName();
+        this.mentalRoutineName = mentalRoutineUpdateDto.getSpiritName();
         this.explanation = mentalRoutineUpdateDto.getExplanation();
         this.sunday = mentalRoutineUpdateDto.getSunday();
         this.saturday = mentalRoutineUpdateDto.getSaturday();
