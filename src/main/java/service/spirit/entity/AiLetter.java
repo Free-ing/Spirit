@@ -14,6 +14,7 @@ import java.time.LocalDate;
 public class AiLetter extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "letter_id")
     private Long id;
 
 

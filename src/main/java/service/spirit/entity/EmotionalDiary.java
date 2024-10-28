@@ -15,6 +15,7 @@ public class EmotionalDiary extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "emotional_diary_id")
     private Long id;
 
     private String goodContent;

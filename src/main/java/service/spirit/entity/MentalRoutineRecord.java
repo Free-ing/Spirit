@@ -16,6 +16,7 @@ public class MentalRoutineRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mental_routine_record_id")
     private Long id;
 
 //    private String mentalRoutineName;
@@ -42,6 +43,7 @@ public class MentalRoutineRecord extends BaseEntity {
 
     public void updateStatus(Boolean status) {
         this.status = status;
+        System.out.println(status);
     }
 
     public void updateCompleteAndCompleteDate(Boolean complete, LocalDate date){

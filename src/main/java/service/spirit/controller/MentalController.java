@@ -3,6 +3,7 @@ package service.spirit.controller;
 import groovy.lang.DelegatesTo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import service.spirit.base.BaseResponse;
 import service.spirit.dto.request.MentalDto;
@@ -100,8 +101,8 @@ public class MentalController {
     //Todo: 감정일기 조회
     @GetMapping("/emotional-record/{diaryId}")
     public BaseResponse<ResponseMentalDto.EmotionalDiaryDto> getEmotionalRecord(
-            @PathVariable Long diaryId,
-            @RequestHeader("Authorization") String authorizationHeader
+            @PathVariable Long diaryId
+//            @RequestHeader("Authorization") String authorizationHeader
 
     ){
         return BaseResponse.onSuccess(mentalQueryService.getEmotionalDiary(diaryId));
@@ -190,9 +191,12 @@ public class MentalController {
     //Todo: 마음채우기 루틴 켜기
     @PatchMapping("/{routineId}/on")
     public BaseResponse<String> onMentalRoutine(
-            @RequestParam LocalDate date,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
             @PathVariable Long routineId
     ){
+        System.out.println(date);
+        System.out.println(routineId);
+        System.out.println("실행중");
         mentalCommonService.onMentalRoutine(routineId,date);
         return BaseResponse.onSuccess("성공적으로 루틴 일정을 켰습니다.");
     }

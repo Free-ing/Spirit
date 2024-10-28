@@ -117,6 +117,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
+        mentalRoutine.updateStatus(true);
         // 현재 날짜 정보 가져오기
 //        LocalDate today = LocalDate.now();
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
@@ -132,6 +133,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     public void offMentalRoutine(Long routineId, LocalDate today) {
         MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
+        mentalRoutine.updateStatus(false);
 
         // 현재 날짜 정보 가져오기
 //        LocalDate today = LocalDate.now();

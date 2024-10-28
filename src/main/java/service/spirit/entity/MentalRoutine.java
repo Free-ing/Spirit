@@ -19,6 +19,7 @@ public class MentalRoutine extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "mental_routine_id")
     private Long Id;
 
     private String mentalRoutineName;
@@ -84,5 +85,9 @@ public class MentalRoutine extends BaseEntity {
 
     public void onMentalRoutine(){
         this.status = true;
+    }
+
+    public void updateStatus(Boolean status){
+        this.status = status;
     }
 }
