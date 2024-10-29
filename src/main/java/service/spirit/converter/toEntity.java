@@ -4,6 +4,9 @@ import service.spirit.dto.request.MentalDto;
 import service.spirit.entity.AiLetter;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
+import service.spirit.entity.MentalRoutineRecord;
+
+import java.time.LocalDate;
 
 public class toEntity {
     public static MentalRoutine toMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto){
@@ -25,11 +28,13 @@ public class toEntity {
                 .build();
     }
 
-    public static EmotionalDiary toEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto){
+    public static EmotionalDiary toEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto, LocalDate date, MentalRoutineRecord mentalRoutineRecord){
         return EmotionalDiary.builder()
+                .mentalRoutineRecord(mentalRoutineRecord)
                 .goodContent(emotionalDiaryDto.getWellDone())
                 .badContent(emotionalDiaryDto.getHardWork())
                 .emotion(emotionalDiaryDto.getEmotion())
+                .routineDate(date)
                 .getAiLetter(emotionalDiaryDto.getGetAiLetter())
                 .userId(emotionalDiaryDto.getUserId())
                 .scrap(false)

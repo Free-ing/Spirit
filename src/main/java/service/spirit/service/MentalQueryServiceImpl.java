@@ -5,13 +5,19 @@ import org.springframework.stereotype.Service;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.response.ResponseMentalDto;
+import service.spirit.dto.response.RoutineTrackerDto;
 import service.spirit.entity.EmotionalDiary;
+import service.spirit.entity.MentalRoutine;
+import service.spirit.entity.MentalRoutineRecord;
 import service.spirit.repository.EmotionalDiaryRepository;
 import service.spirit.repository.MentalRoutineRecordRepository;
 import service.spirit.repository.MentalRoutineRepository;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static service.spirit.converter.ToDto.toEmotionalDiaryDTO;
@@ -52,7 +58,10 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     //Todo: 감정일기 존재하는지 여부 조회
     @Override
     public List<ResponseMentalDto.DiaryDateDto> getDiaryDate(int year, int month, Long userId){
-        return emotionalDiaryRepository.getRecordListByDate(year, month,userId );
+
+        List<ResponseMentalDto.DiaryDateDto> List = emotionalDiaryRepository.getRecordListByDate(year, month,userId);
+        System.out.println(List);
+        return List;
     }
 
     // Todo: 감정일기 상세 조회 기능
@@ -78,5 +87,35 @@ public class MentalQueryServiceImpl implements MentalQueryService{
         System.out.println(dayRoutineDtoList);
         return dayRoutineDtoList;
 
+    }
+
+    //Todo: 마음 채우기 루틴 트래커 조회
+    @Override
+    public List<RoutineTrackerDto.MentalRoutineTrackerDto> getMentalRoutineTrackers(Long userId, int year, int month) {
+        Map<String, RoutineTrackerDto.MentalRoutineTrackerDto> routineMap = new LinkedHashMap<>();
+        List<MentalRoutine> routines = mentalRoutineRepository.findAllWithRecordsByUserId(userId, year, month);
+
+        for (MentalRoutine routine : routines) {
+            if (!routine.getMentalRoutineRecordList().isEmpty()) {  // 레코드가 있는 경우만 처리
+                RoutineTrackerDto.MentalRoutineTrackerDto trackerDto =
+                        routineMap.computeIfAbsent(routine.getMentalRoutineName(),
+                                k -> new RoutineTrackerDto.MentalRoutineTrackerDto(routine.getMentalRoutineName()));
+
+                for (MentalRoutineRecord record : routine.getMentalRoutineRecordList()) {
+                    trackerDto.addRecord(new RoutineTrackerDto.MentalRecordDto(
+                            record.getId(),
+                            record.getCreatedAt()
+                    ));
+                }
+            }
+        }
+
+        return new ArrayList<>(routineMap.values());
+    }
+
+    //Todo: 스크랩 감정일기 조회
+    @Override
+    public List<ResponseMentalDto.EmotionalDiaryDto> getScrapEmotionalDiary(Long userId){
+       return emotionalDiaryRepository.getScrapEmotionalDiary(userId,true);
     }
 }

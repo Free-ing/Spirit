@@ -15,12 +15,13 @@ import java.util.List;
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
+@Table(name = "mental_routine")
 public class MentalRoutine extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mental_routine_id")
-    private Long Id;
+    @Column(name = "id")
+    private Long id;
 
     private String mentalRoutineName;
 
@@ -47,6 +48,7 @@ public class MentalRoutine extends BaseEntity {
 
     @OneToMany(mappedBy = "mentalRoutine", cascade = CascadeType.ALL)
     private List<MentalRoutineRecord> mentalRoutineRecordList = new ArrayList<>();
+
 
     @Builder
     public MentalRoutine(String metalRoutineName, String imageUrl,Long userId, List<MentalRoutineRecord> mentalRoutineRecordList, SpiritType basicService, String explanation, Boolean status, Boolean sunday, Boolean saturday, Boolean thursday, Boolean friday, Boolean wednesday, Boolean tuesday, Boolean monday, LocalTime endTime, LocalTime startTime) {

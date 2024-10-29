@@ -1,6 +1,7 @@
 package service.spirit.controller;
 
 import groovy.lang.DelegatesTo;
+import jakarta.ws.rs.Path;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import service.spirit.base.BaseResponse;
 import service.spirit.dto.request.MentalDto;
 import service.spirit.dto.response.ResponseMentalDto;
+import service.spirit.dto.response.RoutineTrackerDto;
 import service.spirit.service.MentalCommonService;
 import service.spirit.service.MentalQueryService;
 import service.spirit.service.OpenAiService;
@@ -31,7 +33,6 @@ public class MentalController {
     @PostMapping(value = "/routine")
     public BaseResponse<Long> addSpiritRoutine(
             @RequestBody MentalDto.mentalRoutineDto mentalRoutineDto,
-//            @PathVariable Long userId
                 @RequestHeader("Authorization") String authorizationHeader
 
         ){
@@ -42,17 +43,18 @@ public class MentalController {
     }
 
     //Todo: 감정일기 추가하기
-    @PostMapping(value = "/emotional-diary")
+    @PostMapping(value = "/emotional-diary/{recordId}")
     public BaseResponse<Long> saveEmotionalDiary(
             @RequestBody MentalDto.emotionalDiaryDto emotionalDiaryDto,
-//            @PathVariable Long userId
+//            @RequestParam LocalDate date,
+            @PathVariable Long recordId,
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
 
         emotionalDiaryDto.setUserId(userId);
-        Long emotionalDiaryId = mentalCommonService.saveEmotionalDiary(emotionalDiaryDto);
+        Long emotionalDiaryId = mentalCommonService.saveEmotionalDiary(emotionalDiaryDto,recordId);
 
         return BaseResponse.onSuccess(emotionalDiaryId);
     }
@@ -65,7 +67,6 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-
         Long aiLetterId =openAiService.writeAiLetter(diaryId);
 
         return BaseResponse.onSuccess(aiLetterId);
@@ -76,7 +77,6 @@ public class MentalController {
     // Todo: 마음 채우기 루틴 리스트 조회
     @GetMapping("/routine-list")
     public BaseResponse<List<ResponseMentalDto.MentalRoutineDto>> getRoutineList(
-//            @PathVariable Long userId
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
@@ -85,11 +85,10 @@ public class MentalController {
     }
 
     // Todo: 감정일기 존재하는지 리스트 조회
-    @GetMapping("/emotional-record-list/{userId}")
+    @GetMapping("/emotional-record-list")
     public BaseResponse<List<ResponseMentalDto.DiaryDateDto>> getEmotionalDiaryList(
             @RequestParam int year,
             @RequestParam int month,
-//            @PathVariable Long userId
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
@@ -101,8 +100,8 @@ public class MentalController {
     //Todo: 감정일기 조회
     @GetMapping("/emotional-record/{diaryId}")
     public BaseResponse<ResponseMentalDto.EmotionalDiaryDto> getEmotionalRecord(
-            @PathVariable Long diaryId
-//            @RequestHeader("Authorization") String authorizationHeader
+            @PathVariable Long diaryId,
+            @RequestHeader("Authorization") String authorizationHeader
 
     ){
         return BaseResponse.onSuccess(mentalQueryService.getEmotionalDiary(diaryId));
@@ -207,7 +206,6 @@ public class MentalController {
             @PathVariable Long routineId
     ){
 
-        int year = LocalDate.now().getYear();
         mentalCommonService.offMentalRoutine(routineId,date);
         return BaseResponse.onSuccess("성공적으로 루틴 일정을 껐습니다.");
     }
@@ -237,24 +235,48 @@ public class MentalController {
     //Todo: 회원의 모든 마음채우기 데이터 삭제
     @DeleteMapping("/users/{userId}")
     public BaseResponse<String> deleteSpiritData(
-            @RequestHeader("Authorization") String authorizationHeader
+            @PathVariable Long userId
+//            @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+//        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
         mentalCommonService.deleteSpiritDate(userId);
         return BaseResponse.onSuccess("성공적으로 회원의 마음채우기 모든 데이터를 삭제하였습니다.");
     }
 
     //Todo: 일별 일정 조회
-    @GetMapping("/{userId}")
+    @GetMapping("/home")
     public BaseResponse<List<ResponseMentalDto.DayRoutineDto>> getDayRoutine(
             @RequestParam LocalDate date,
-//            @PathVariable Long userId
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
         return BaseResponse.onSuccess(mentalQueryService.getDayRoutine(date, userId));
     }
+
+    //Todo: 월별 루틴 트래커 조회
+    @GetMapping("/tracker/{userId}")
+    public BaseResponse<List<RoutineTrackerDto.MentalRoutineTrackerDto>> getRoutineTracker(
+            @RequestParam int year,
+            @RequestParam int month,
+
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        return BaseResponse.onSuccess(mentalQueryService.getMentalRoutineTrackers(userId,year,month));
+    }
+
+    //Todo: 스크랩한 감정일기 조회
+    @GetMapping("emotional-record-list/scrap")
+    public BaseResponse<List<ResponseMentalDto.EmotionalDiaryDto>> getScrapEmotionalDiary(
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        return BaseResponse.onSuccess(mentalQueryService.getScrapEmotionalDiary(userId));
+    }
+
 
 }

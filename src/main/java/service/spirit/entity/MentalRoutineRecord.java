@@ -12,11 +12,12 @@ import java.time.LocalDate;
 @Getter
 @NoArgsConstructor
 @Entity
+@Table(name = "mental_routine_record")
 public class MentalRoutineRecord extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mental_routine_record_id")
+    @Column(name = "id")
     private Long id;
 
 //    private String mentalRoutineName;
@@ -30,6 +31,9 @@ public class MentalRoutineRecord extends BaseEntity {
 
     private Boolean complete;
     private Boolean status;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    private EmotionalDiary emotionalDiary;
 
     @Builder
     public MentalRoutineRecord(Boolean complete ,LocalDate routineDate,Boolean status, Long userId, LocalDate completeDay, MentalRoutine mentalRoutine) {
@@ -49,5 +53,9 @@ public class MentalRoutineRecord extends BaseEntity {
     public void updateCompleteAndCompleteDate(Boolean complete, LocalDate date){
         this.complete = complete;
         this.completeDay = date;
+    }
+
+    public void setEmotionalDiary(EmotionalDiary emotionalDiary){
+        this.emotionalDiary = emotionalDiary;
     }
 }

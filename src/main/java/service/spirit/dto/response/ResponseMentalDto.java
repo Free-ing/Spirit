@@ -47,7 +47,7 @@ public class ResponseMentalDto {
     @Builder
     @NoArgsConstructor
     public static class DiaryDateDto{
-        private LocalDateTime date;
+        private LocalDate date;
         private Emotion emotion;
         private Long diaryId;
     }
@@ -61,6 +61,7 @@ public class ResponseMentalDto {
         private String wellDone;
         private String hardWork;
         private Boolean scrap;
+        private Long letterId;
     }
 
     @Getter
@@ -95,5 +96,13 @@ public class ResponseMentalDto {
         private Long recordId;
         private Boolean complete;
 
+    }
+
+    @NoArgsConstructor
+    @Builder
+    @AllArgsConstructor
+    public static class DiaryTrackerDto{
+        private Long id;
+        private LocalDate routineDate;
     }
 }

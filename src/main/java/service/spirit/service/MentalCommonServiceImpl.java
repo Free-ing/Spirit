@@ -46,11 +46,15 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 감정일기 작성
     @Override
-    public Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto) {
+    public Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto, Long recordId) {
+
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(recordId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         //마음 채우기 루틴 저장
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.save(toEmotionalDiary(emotionalDiaryDto));
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.save(toEmotionalDiary(emotionalDiaryDto, mentalRoutineRecord.getRoutineDate(), mentalRoutineRecord));
 
+        mentalRoutineRecord.setEmotionalDiary(emotionalDiary);
         //저장된 객체 반환
         return emotionalDiary.getId();
     }
@@ -102,13 +106,12 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo : 마음 채우기 수정
     @Override
-    public Long updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto){
+    public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto){
         MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         mentalRoutine.update(mentalRoutineUpdateDto);
 
-        return mentalRoutine.getId();
     }
 
     //Todo : 마음 채우기 루틴 on

@@ -9,7 +9,7 @@ public interface MentalCommonService {
     Long addMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto);
 
     //Todo: 감정일기 작성
-    Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto);
+    Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto,Long recordId);
 
     //Todo: 감정일기 스크랩하기
     Long emotionalRecordDiaryScrap(Long recordId);
@@ -27,7 +27,7 @@ public interface MentalCommonService {
     void deleteAiLetter(Long letterId);
 
     //Todo : 마음 채우기 수정
-    Long updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto);
+    void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto);
 
     //Todo : 마음 채우기 루틴 on
     void onMentalRoutine(Long routineId, LocalDate today);

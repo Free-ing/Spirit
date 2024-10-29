@@ -3,12 +3,7 @@ package service.spirit.service;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.ai.chat.ChatResponse;
-import org.springframework.ai.chat.messages.Message;
-import org.springframework.ai.chat.messages.UserMessage;
-import org.springframework.ai.chat.prompt.Prompt;
-import org.springframework.ai.chat.prompt.SystemPromptTemplate;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
@@ -22,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class OpenAiServiceImpl implements OpenAiService {
+public class OpenAiServiceImpl implements OpenAiService{
     private final ChatClient chatClient;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
     private final AiLetterRepository aiLetterRepository;
@@ -35,25 +30,19 @@ public class OpenAiServiceImpl implements OpenAiService {
         EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(diaryId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
 
-        String systemPromptContent = "너는 사용자의 친구야. 사용자가 오늘 잘한 일과 힘들었던 일에 대해서 일기를 작성하면 너는 편지를 작성해줘. " +
-                "위로의 말도 좋고, 너가 하고 싶은 말을 적어도 좋아. 최소 5줄 이상으로 친근하게 작성해줘";
 
-
-        SystemPromptTemplate systemPromptTemplate = new SystemPromptTemplate(systemPromptContent);
-        Message systemMessage = systemPromptTemplate.createMessage();
                 String diary1 = emotionalDiary.getGoodContent();
                 String diary2 = emotionalDiary.getBadContent();
 
-        String userMessageContent = String.format("다음 일기를 바탕으로 친구에게 편지를 작성해줘. 잘한일: %s  / 힘들었던 일 : %s / 그리고 편지에 대해서 영어로 변환한 후 편지를 작성하고, 작성한 편지를 가시 한글로 변환해줘 / 영어로 작성한 편지는 반환하지 않아도 돼", diary1,diary2);
-        UserMessage userMessage = new UserMessage(userMessageContent);
-        Prompt prompt = new Prompt(List.of(systemMessage, userMessage));
-        ChatResponse response = chatClient.call(prompt);
-        String jsonResponse = response.getResult().getOutput().getContent();
 
+        String userMessageContent = String.format("다음 일기를 바탕으로 친구에게 편지를 작성해줘. 잘한일: %s  / 힘들었던 일 : %s ", diary1,diary2);
+
+        String jsonResponse = chatClient.prompt()
+                .user(userMessageContent)
+                .call()
+                .content();
 
         System.out.println(jsonResponse);
-
-
 
         //ai 편지 객체 만들기
         AiLetter aiLetter  = AiLetter.builder()
