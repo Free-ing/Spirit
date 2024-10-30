@@ -21,6 +21,8 @@ public class OpenAiServiceImpl implements OpenAiService{
     private final ChatClient chatClient;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
     private final AiLetterRepository aiLetterRepository;
+    private final TranslationService translationService;
+
 
     //Todo:ai 편지 작성
     @Override
@@ -35,14 +37,18 @@ public class OpenAiServiceImpl implements OpenAiService{
                 String diary2 = emotionalDiary.getBadContent();
 
 
-        String userMessageContent = String.format("다음 일기를 바탕으로 친구에게 편지를 작성해줘. 잘한일: %s  / 힘들었던 일 : %s ", diary1,diary2);
+        String userMessageContent = String.format("\n" +
+                "Please write a letter to your friend based on the following diary entry. Good job: %s / Bad job: %s", diary1,diary2);
 
         String jsonResponse = chatClient.prompt()
                 .user(userMessageContent)
                 .call()
                 .content();
 
+
+        String translatedContent = translationService.translateToKorean(jsonResponse);
         System.out.println(jsonResponse);
+
 
         //ai 편지 객체 만들기
         AiLetter aiLetter  = AiLetter.builder()

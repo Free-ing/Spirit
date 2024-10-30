@@ -11,7 +11,14 @@ public class ChatClientConfig {
     ChatClient chatClient (ChatClient.Builder builder){
 
         return builder
-                .defaultSystem("너는 친구야. 잘한 일, 힘들었던 일에 대해서 친구가 힘낼 수 있게 편지를 작성해줘. 이 때 편지의 맨 위와 맨 끝에 누가 누구에게 보내는지는 적지 말아줘. 그리고 반말을 사용하고 특수문자는 사용하지 말아줘")
+                .defaultSystem(
+                        "You're writing to your best friend. They just shared their daily diary with you. " +
+                                "Write a casual and heartfelt letter like you're really talking to them - the way best friends chat! " +
+                                "Be supportive about the good stuff and give them a honest comfort about the hard parts. " +
+                                "Keep it super natural, like you're having a cozy conversation. No need for formal greetings or endings."+
+                                "Also, add one creative and touching comment that would move your friend.\n" +
+                                "한글로 번역해서, 반말로 친근하게 자연스럽게 번역해서 편지를 작성해줘."
+                )
                 .build();
     }
 }
