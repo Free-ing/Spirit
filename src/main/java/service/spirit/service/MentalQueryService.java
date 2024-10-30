@@ -28,4 +28,7 @@ public interface MentalQueryService {
 
     //Todo: 스크랩 감정일기 조회
     List<ResponseMentalDto.EmotionalDiaryDto> getScrapEmotionalDiary(Long userId);
+
+    //Todo: ai 편지 조회
+    ResponseMentalDto.AiLetterDto getLetter(Long letterId);
 }

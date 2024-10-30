@@ -46,7 +46,7 @@ public class OpenAiServiceImpl implements OpenAiService{
                 .content();
 
 
-        String translatedContent = translationService.translateToKorean(jsonResponse);
+//        String translatedContent = translationService.translateToKorean(jsonResponse);
         System.out.println(jsonResponse);
 
 

@@ -105,4 +105,12 @@ public class ResponseMentalDto {
         private Long id;
         private LocalDate routineDate;
     }
+
+    @NoArgsConstructor
+    @Builder
+    @Getter
+    @AllArgsConstructor
+    public static class AiLetterDto{
+        private String content;
+    }
 }

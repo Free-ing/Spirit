@@ -29,6 +29,13 @@ public class MentalController {
     private final MentalQueryService mentalQueryService;
     private final TokenProviderService tokenProviderService;
 
+
+    @GetMapping("/health_check")
+    public String status(){
+        return "Spirit Service is working fine!";
+    }
+
+
     //Todo: 마음채우기 루틴 추가하기
     @PostMapping(value = "/routine")
     public BaseResponse<Long> addSpiritRoutine(
@@ -67,6 +74,7 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
+        System.out.println("편지 작성 api 호출");
         Long aiLetterId =openAiService.writeAiLetter(diaryId);
 
         return BaseResponse.onSuccess(aiLetterId);
@@ -248,6 +256,7 @@ public class MentalController {
     @GetMapping("/home")
     public BaseResponse<List<ResponseMentalDto.DayRoutineDto>> getDayRoutine(
             @RequestParam LocalDate date,
+//            @PathVariable Long userId
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
@@ -256,10 +265,11 @@ public class MentalController {
     }
 
     //Todo: 월별 루틴 트래커 조회
-    @GetMapping("/tracker/{userId}")
+    @GetMapping("/tracker")
     public BaseResponse<List<RoutineTrackerDto.MentalRoutineTrackerDto>> getRoutineTracker(
             @RequestParam int year,
             @RequestParam int month,
+//            @PathVariable Long userId
 
             @RequestHeader("Authorization") String authorizationHeader
     ){
@@ -269,9 +279,10 @@ public class MentalController {
     }
 
     //Todo: 스크랩한 감정일기 조회
-    @GetMapping("emotional-record-list/scrap")
+    @GetMapping("/emotional-record-list/scrap")
     public BaseResponse<List<ResponseMentalDto.EmotionalDiaryDto>> getScrapEmotionalDiary(
-            @RequestHeader("Authorization") String authorizationHeader
+//            @PathVariable Long userId
+           @RequestHeader("Authorization") String authorizationHeader
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
 
@@ -279,4 +290,14 @@ public class MentalController {
     }
 
 
+    //Todo: ai 편지 조회
+    @GetMapping("/ai-letter/{letterId}")
+    public BaseResponse<ResponseMentalDto.AiLetterDto> getLetter(
+            @PathVariable Long letterId,
+            @RequestHeader("Authorization") String authorizationHeader
+
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        return BaseResponse.onSuccess(mentalQueryService.getLetter(letterId));
+    }
 }

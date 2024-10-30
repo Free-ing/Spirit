@@ -6,9 +6,11 @@ import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.dto.response.RoutineTrackerDto;
+import service.spirit.entity.AiLetter;
 import service.spirit.entity.EmotionalDiary;
 import service.spirit.entity.MentalRoutine;
 import service.spirit.entity.MentalRoutineRecord;
+import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
 import service.spirit.repository.MentalRoutineRecordRepository;
 import service.spirit.repository.MentalRoutineRepository;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static service.spirit.converter.ToDto.toAiLetterDto;
 import static service.spirit.converter.ToDto.toEmotionalDiaryDTO;
 
 @Service
@@ -29,6 +32,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     private final MentalRoutineRepository mentalRoutineRepository;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
     private final MentalRoutineRecordRepository mentalRoutineRecordRepository;
+    private final AiLetterRepository aiLetterRepository;
 
     //Todo: 마음 채우기 루틴 리스트 조회
     @Override
@@ -83,6 +87,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     @Override
     public  List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date, Long userId){
         System.out.println(date);
+        System.out.println(userId);
         List<ResponseMentalDto.DayRoutineDto> dayRoutineDtoList = mentalRoutineRecordRepository.getDayRoutine(date,userId, true);
         System.out.println(dayRoutineDtoList);
         return dayRoutineDtoList;
@@ -117,5 +122,14 @@ public class MentalQueryServiceImpl implements MentalQueryService{
     @Override
     public List<ResponseMentalDto.EmotionalDiaryDto> getScrapEmotionalDiary(Long userId){
        return emotionalDiaryRepository.getScrapEmotionalDiary(userId,true);
+    }
+
+    //Todo: ai 편지 조회
+    @Override
+    public ResponseMentalDto.AiLetterDto getLetter(Long letterId){
+        AiLetter aiLetter = aiLetterRepository.findById(letterId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.AI_LETTER_NOT_FOUND));
+        return toAiLetterDto(aiLetter);
+
     }
 }
