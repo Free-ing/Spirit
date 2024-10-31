@@ -30,7 +30,7 @@ public class EmotionalDiary extends BaseEntity {
     private Boolean getAiLetter;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ai_letter_id")
+    @JoinColumn(name = "ai_letter_id")  // EmotionalDiary가 관계의 주인
     private AiLetter aiLetter;
 
     private Boolean scrap;
@@ -43,6 +43,7 @@ public class EmotionalDiary extends BaseEntity {
 
 
     public void setAiLetter (AiLetter aiLetter){
+        System.out.println("ailetter 저장 완료");
         this.aiLetter = aiLetter;
     }
 
@@ -62,8 +63,11 @@ public class EmotionalDiary extends BaseEntity {
         this.scrap = scrap;
     }
 
-    public void addAiLetter(AiLetter aiLetter){
-        this.aiLetter = aiLetter;
-    }
+//    public void addAiLetter(AiLetter aiLetter) {
+//        this.aiLetter = aiLetter;
+//        if (aiLetter != null) {
+//            aiLetter.setEmotionalDiary(this);
+//        }
+//    }
 
 }

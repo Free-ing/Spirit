@@ -43,4 +43,7 @@ public interface MentalCommonService {
 
     //Todo: 회원의 모든 마음채우기 데이터 삭제
     void deleteSpiritDate(Long userId);
+
+    //Todo: 기본 기능 생성
+    void createDefaultService(Long userId);
 }

@@ -10,6 +10,7 @@ import service.spirit.base.BaseResponse;
 import service.spirit.dto.request.MentalDto;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.dto.response.RoutineTrackerDto;
+import service.spirit.entity.MentalRoutine;
 import service.spirit.service.MentalCommonService;
 import service.spirit.service.MentalQueryService;
 import service.spirit.service.OpenAiService;
@@ -101,6 +102,7 @@ public class MentalController {
 
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        System.out.println(userId);
         return BaseResponse.onSuccess(mentalQueryService.getDiaryDate(year,month,userId));
     }
 
@@ -299,5 +301,13 @@ public class MentalController {
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
         return BaseResponse.onSuccess(mentalQueryService.getLetter(letterId));
+    }
+
+    //Todo : 마음 채우기 기본 기능 생성
+    @GetMapping("/defalute-routine/{userId}")
+    public void createDefaultRoutine(
+            @PathVariable Long userId
+    ){
+        mentalCommonService.createDefaultService(userId);
     }
 }

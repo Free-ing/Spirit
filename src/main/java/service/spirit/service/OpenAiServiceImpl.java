@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.entity.AiLetter;
@@ -16,6 +17,7 @@ import service.spirit.repository.EmotionalDiaryRepository;
 import java.util.List;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class OpenAiServiceImpl implements OpenAiService{
     private final ChatClient chatClient;
@@ -58,7 +60,8 @@ public class OpenAiServiceImpl implements OpenAiService{
 
         //ai 편지 저장
         aiLetterRepository.save(aiLetter);
-        emotionalDiary.addAiLetter(aiLetter);
+        emotionalDiary.setAiLetter(aiLetter);
+        System.out.println(emotionalDiary.getAiLetter().getId());
 
         return aiLetter.getId();
 

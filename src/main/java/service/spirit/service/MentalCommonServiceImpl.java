@@ -6,10 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.request.MentalDto;
-import service.spirit.entity.AiLetter;
-import service.spirit.entity.EmotionalDiary;
-import service.spirit.entity.MentalRoutine;
-import service.spirit.entity.MentalRoutineRecord;
+import service.spirit.entity.*;
 import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
 import service.spirit.repository.MentalRoutineRecordRepository;
@@ -17,6 +14,7 @@ import service.spirit.repository.MentalRoutineRepository;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -251,5 +249,44 @@ public class MentalCommonServiceImpl implements MentalCommonService {
             case SATURDAY -> routine.getSaturday() != null && routine.getSaturday();
             case SUNDAY -> routine.getSunday() != null && routine.getSunday();
         };
+    }
+
+    //Todo: 기본 기능 생성
+    @Override
+    public void createDefaultService(Long userId) {
+        MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을 일기로 작성해보세요! 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
+                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/emotional_diary.png", SpiritType.DIARY);
+
+        MentalRoutine meditation = createMentalRoutine(userId, "명상하기", "아침에 명상을 한다면 오늘 해야할 일에 대해서 생각해보세요. 저녁에 면성을 한다면 오늘 있었던 일들, 특히나 힘들고 어려웠던 일에 대해서 앞으로 어떻게 대처할 지에 대해서 생각해보세요.",
+                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/leaf_and_music.png",SpiritType.MEDITATION);
+
+
+        mentalRoutineRepository.save(diaryRoutine);
+        mentalRoutineRepository.save(meditation);
+    }
+
+
+
+
+
+
+    private MentalRoutine createMentalRoutine(Long userId, String routineName, String explanation, LocalTime startTime , LocalTime endTime, String imageUrl, SpiritType spiritType) {
+        return MentalRoutine.builder()
+                .metalRoutineName(routineName)
+                .userId(userId)
+                .monday(true)
+                .tuesday(true)
+                .wednesday(true)
+                .thursday(true)
+                .friday(true)
+                .saturday(true)
+                .sunday(true)
+                .explanation(explanation)
+                .startTime(startTime)
+                .endTime(endTime)
+                .status(true)
+                .imageUrl(imageUrl)
+                .basicService(spiritType)
+                .build();
     }
 }
