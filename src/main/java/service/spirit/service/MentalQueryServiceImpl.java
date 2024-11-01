@@ -109,7 +109,7 @@ public class MentalQueryServiceImpl implements MentalQueryService{
                 for (MentalRoutineRecord record : routine.getMentalRoutineRecordList()) {
                     trackerDto.addRecord(new RoutineTrackerDto.MentalRecordDto(
                             record.getId(),
-                            record.getCreatedAt()
+                            record.getRoutineDate()
                     ));
                 }
             }

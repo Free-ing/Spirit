@@ -15,12 +15,7 @@ public class RoutineTrackerDto {
     public static class MentalRoutineTrackerDto {
         private String mentalName;
         private List<MentalRecordDto> records = new ArrayList<>();
-        private List<ResponseMentalDto.DiaryTrackerDto> diaryTrackerDtoList;
 
-
-        public void setDiaryTrackerDtoList(List<ResponseMentalDto.DiaryTrackerDto> diaryTrackerDtoList) {
-            this.diaryTrackerDtoList = diaryTrackerDtoList;
-        }
 
         public MentalRoutineTrackerDto(String mentalName) {
         this.mentalName = mentalName;
@@ -34,11 +29,11 @@ public class RoutineTrackerDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class MentalRecordDto {
         private Long id;
-        private LocalDate createdAt;  // LocalDateTime 대신 LocalDate 사용
+        private LocalDate routineDate;  // LocalDateTime 대신 LocalDate 사용
 
-        public MentalRecordDto(Long id, LocalDateTime createdAt) {
+        public MentalRecordDto(Long id, LocalDate routineDate) {
             this.id = id;
-            this.createdAt = createdAt.toLocalDate();  // LocalDate로 변환
+            this.routineDate = routineDate;
         }
     }
 }

@@ -23,7 +23,7 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
     @Query("SELECT m FROM MentalRoutine m " +
             "LEFT JOIN FETCH m.mentalRoutineRecordList mr " +
             "WHERE m.userId = :userId " +
-            "AND (mr IS NULL OR (YEAR(mr.routineDate) = :year AND MONTH(mr.routineDate) = :month))")
+            "AND (mr IS NULL OR (YEAR(mr.routineDate) = :year AND MONTH(mr.routineDate) = :month)) AND mr.complete = true")
     List<MentalRoutine> findAllWithRecordsByUserId(
             @Param("userId") Long userId,
             @Param("year") int year,

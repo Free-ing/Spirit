@@ -304,7 +304,7 @@ public class MentalController {
     }
 
     //Todo : 마음 채우기 기본 기능 생성
-    @GetMapping("/defalute-routine/{userId}")
+    @PostMapping("/default-routine/{userId}")
     public void createDefaultRoutine(
             @PathVariable Long userId
     ){

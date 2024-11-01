@@ -39,11 +39,14 @@ public class MentalRoutine extends BaseEntity {
     private Boolean sunday;
 
     private String imageUrl;
+
+    @Column(columnDefinition = "TEXT")
     private String explanation;
 
     private Boolean status;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "basic_service")
     private SpiritType basicService;
 
     @OneToMany(mappedBy = "mentalRoutine", cascade = CascadeType.ALL)

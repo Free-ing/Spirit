@@ -257,7 +257,14 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을 일기로 작성해보세요! 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
                 LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/emotional_diary.png", SpiritType.DIARY);
 
-        MentalRoutine meditation = createMentalRoutine(userId, "명상하기", "아침에 명상을 한다면 오늘 해야할 일에 대해서 생각해보세요. 저녁에 면성을 한다면 오늘 있었던 일들, 특히나 힘들고 어려웠던 일에 대해서 앞으로 어떻게 대처할 지에 대해서 생각해보세요.",
+        MentalRoutine meditation = createMentalRoutine(userId, "명상하기", """
+                명상은 마음을 안정시키고 현재에 집중하는 정신 수련법입니다. 스트레스 해소, 불안 감소, 집중력 향상에 효과적이며, 규칙적인 명상은 정서적 안정과 수면의 질 향상에도 도움을 줍니다. 초보자도 하루 5-10분부터 시작할 수 있어 부담 없이 시작할 수 있어요!
+                \n1. 호흡 명상
+                편안한 자세로 앉아 눈을 감고, 들숨과 날숨에 집중합니다. 호흡이 들어오고 나가는 것을 자연스럽게 관찰하며, 다른 생각이 들면 다시 호흡으로 주의를 가져옵니다.
+                \n2. 바디스캔 명상
+                발끝부터 머리끝까지 차례로 신체 각 부위의 감각을 느끼며 이완합니다. 긴장된 부위가 있다면 호흡과 함께 그 긴장을 부드럽게 놓아주세요. 
+                """,
+
                 LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/leaf_and_music.png",SpiritType.MEDITATION);
 
 
