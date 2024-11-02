@@ -16,7 +16,7 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
     List<MentalRoutine> findByUserId(Long userId);
 
     @Query("select new service.spirit.dto.response.ResponseMentalDto$RoutineInfoDto(mr.explanation, mr.mentalRoutineName) " +
-            "from MentalRoutine mr where mr.Id = :routineId")
+            "from MentalRoutine mr where mr.id = :routineId")
     Optional<ResponseMentalDto.RoutineInfoDto> getRoutineInfo(Long routineId);
 
 

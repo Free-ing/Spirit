@@ -29,8 +29,8 @@ public class EmotionalDiary extends BaseEntity {
 
     private Boolean getAiLetter;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ai_letter_id")  // EmotionalDiary가 관계의 주인
+    @OneToOne(cascade = CascadeType.ALL)  // 주인 쪽에서 cascade 설정
+    @JoinColumn(name = "ai_letter_id")    // 주인 쪽에서 외래 키 관리
     private AiLetter aiLetter;
 
     private Boolean scrap;
@@ -42,9 +42,18 @@ public class EmotionalDiary extends BaseEntity {
     private MentalRoutineRecord mentalRoutineRecord;
 
 
-    public void setAiLetter (AiLetter aiLetter){
-        System.out.println("ailetter 저장 완료");
+    public void setAiLetter(AiLetter aiLetter) {
+        // 기존 연관관계 제거
+        if (this.aiLetter != null) {
+            this.aiLetter.setEmotionalDiary(null);
+        }
+
         this.aiLetter = aiLetter;
+
+        // 새로운 연관관계 설정
+        if (aiLetter != null) {
+            aiLetter.setEmotionalDiary(this);
+        }
     }
 
     @Builder

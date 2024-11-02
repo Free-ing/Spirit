@@ -98,6 +98,11 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         AiLetter aiLetter = aiLetterRepository.findById(letterId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.AI_LETTER_NOT_FOUND));
 
+        EmotionalDiary diary = aiLetter.getEmotionalDiary();
+        if (diary != null) {
+            diary.setAiLetter(null);  // 연관관계 제거
+        }
+
         aiLetterRepository.delete(aiLetter);
     }
 

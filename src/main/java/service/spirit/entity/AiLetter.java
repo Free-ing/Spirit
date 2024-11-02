@@ -20,7 +20,7 @@ public class AiLetter extends BaseEntity {
     @Column(columnDefinition = "TEXT")  // PostgreSQL에서는 TEXT 사용
     private String content;
 
-    @OneToOne(mappedBy = "aiLetter", cascade = CascadeType.ALL)  // EmotionalDiary가 관계의 주인임을 명시
+    @OneToOne(mappedBy = "aiLetter")  // 주인이 아닌 쪽에서 mappedBy 설정
     private EmotionalDiary emotionalDiary;
 
 
