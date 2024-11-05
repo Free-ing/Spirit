@@ -39,8 +39,7 @@ public class ResponseMentalDto {
         private Boolean status;
         private LocalTime startTime;
         private LocalTime endTime;
-        private String explanation;
-    }
+        private String explanation;}
 
     @Getter
     @AllArgsConstructor

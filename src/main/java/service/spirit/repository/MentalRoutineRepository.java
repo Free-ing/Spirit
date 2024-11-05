@@ -29,4 +29,8 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
             @Param("year") int year,
             @Param("month") int month
     );
+
+
+    @Query("SELECT mr FROM MentalRoutine mr WHERE mr.status = true")
+    List<MentalRoutine> findActiveRoutines();
 }

@@ -1,6 +1,7 @@
 package service.spirit.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
@@ -181,11 +182,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
+    //Todo: routine이 on인 건 자동으로 일정 생성되게 하기
+    @Scheduled(cron = "0 1 0 ? * MON")
+    public void createRoutineRecord() {
+        List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
 
+        for (MentalRoutine mentalRoutine : mentalRoutineList) {
+            onMentalRoutine(mentalRoutine.getId(), LocalDate.now());
+        }
 
-
-
-
+    }
 
 
 
@@ -259,20 +265,20 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     //Todo: 기본 기능 생성
     @Override
     public void createDefaultService(Long userId) {
-        MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을 일기로 작성해보세요! 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
+        MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을\n 일기로 작성해보세요!\n 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
                 LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/emotional_diary.png", SpiritType.DIARY);
 
         MentalRoutine meditation = createMentalRoutine(userId, "명상하기", """
-                명상은 마음을 안정시키고 현재에 집중하는 정신 수련법입니다. 스트레스 해소, 불안 감소, 집중력 향상에 효과적이며, 규칙적인 명상은 정서적 안정과 수면의 질 향상에도 도움을 줍니다. 초보자도 하루 5-10분부터 시작할 수 있어 부담 없이 시작할 수 있어요!
-                \n1. 호흡 명상
-                편안한 자세로 앉아 눈을 감고, 들숨과 날숨에 집중합니다. 호흡이 들어오고 나가는 것을 자연스럽게 관찰하며, 다른 생각이 들면 다시 호흡으로 주의를 가져옵니다.
-                \n2. 바디스캔 명상
-                발끝부터 머리끝까지 차례로 신체 각 부위의 감각을 느끼며 이완합니다. 긴장된 부위가 있다면 호흡과 함께 그 긴장을 부드럽게 놓아주세요. 
+                명상은 마음을 안정시키고 현재에 집중하는 정신 수련법입니다.\n\n 스트레스 해소, 불안 감소, 집중력 향상에 효과적이며, 규칙적인 명상은 정서적 안정과 수면의 질 향상에도 도움을 줍니다.\n\n 초보자도 하루 5-10분부터 시작할 수 있어 부담 없이 시작할 수 있어요!
                 """,
-
                 LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/leaf_and_music.png",SpiritType.MEDITATION);
 
 
+//        1. 호흡 명상
+//        편안한 자세로 앉아 눈을 감고, 들숨과 날숨에 집중합니다. 호흡이 들어오고 나가는 것을 자연스럽게 관찰하며, 다른 생각이 들면 다시 호흡으로 주의를 가져옵니다.
+//
+//        2. 바디스캔 명상
+//        발끝부터 머리끝까지 차례로 신체 각 부위의 감각을 느끼며 이완합니다. 긴장된 부위가 있다면 호흡과 함께 그 긴장을 부드럽게 놓아주세요.
         mentalRoutineRepository.save(diaryRoutine);
         mentalRoutineRepository.save(meditation);
     }
