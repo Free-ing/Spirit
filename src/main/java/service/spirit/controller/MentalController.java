@@ -18,6 +18,7 @@ import service.spirit.service.TokenProviderService;
 
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -310,4 +311,23 @@ public class MentalController {
     ){
         mentalCommonService.createDefaultService(userId);
     }
+
+
+        //Todo: 하나라도 수행한 일정이 있다면 조회하는 그 날짜 반환하기
+
+        @GetMapping("/home/record-week/{userId}")
+        public BaseResponse<?> getDate(
+                @RequestParam LocalDate startDate,
+                @RequestParam LocalDate endDate,
+                @PathVariable Long userId
+        ) {
+            List<ResponseMentalDto.DayCompleteRoutine> existingDates =
+                    mentalQueryService.getCompleteDate(startDate, endDate, userId);
+
+            if (existingDates.isEmpty()) {
+                return BaseResponse.onSuccess(Collections.emptyList());
+            }
+
+            return BaseResponse.onSuccess(existingDates);
+        }
 }

@@ -1,5 +1,6 @@
 package service.spirit.service;
 
+import org.springframework.transaction.annotation.Transactional;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.dto.response.RoutineTrackerDto;
 import service.spirit.entity.MentalRoutine;
@@ -31,4 +32,8 @@ public interface MentalQueryService {
 
     //Todo: ai 편지 조회
     ResponseMentalDto.AiLetterDto getLetter(Long letterId);
+
+    //Todo: 홈화면 하나라도 수행한 날짜 반환
+    @Transactional(readOnly = true)
+    List<ResponseMentalDto.DayCompleteRoutine> getCompleteDate(LocalDate startDate, LocalDate endDate, Long userId);
 }

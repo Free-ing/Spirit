@@ -2,6 +2,7 @@ package service.spirit.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.response.ResponseMentalDto;
@@ -132,4 +133,13 @@ public class MentalQueryServiceImpl implements MentalQueryService{
         return toAiLetterDto(aiLetter);
 
     }
+
+
+    //Todo: 홈화면 하나라도 수행한 날짜 반환
+    @Override
+    @Transactional(readOnly = true)
+    public List<ResponseMentalDto.DayCompleteRoutine> getCompleteDate(LocalDate startDate, LocalDate endDate, Long userId) {
+        return mentalRoutineRecordRepository.findCompletedDatesByUserIdAndDateRange(userId, startDate, endDate);
+    }
+
 }

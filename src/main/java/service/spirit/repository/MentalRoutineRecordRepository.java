@@ -2,6 +2,7 @@ package service.spirit.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.MentalRoutine;
 import service.spirit.entity.MentalRoutineRecord;
@@ -23,4 +24,17 @@ public interface MentalRoutineRecordRepository extends JpaRepository<MentalRouti
             "from MentalRoutineRecord mr where mr.routineDate =:date and mr.status =:status and mr.userId =:userId")
     List<ResponseMentalDto.DayRoutineDto> getDayRoutine(LocalDate date, Long userId ,Boolean status);
 
+
+    @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DayCompleteRoutine(m.routineDate) " +
+            "FROM MentalRoutineRecord m " +
+            "WHERE m.userId = :userId " +
+            "AND m.routineDate BETWEEN :startDate AND :endDate " +
+            "AND m.complete = true " +
+            "GROUP BY m.routineDate " +
+            "ORDER BY m.routineDate")
+    List<ResponseMentalDto.DayCompleteRoutine> findCompletedDatesByUserIdAndDateRange(
+            @Param("userId") Long userId,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate
+    );
 }
