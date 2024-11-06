@@ -32,7 +32,8 @@ public class MentalRoutineRecord extends BaseEntity {
     private Boolean complete;
     private Boolean status;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(orphanRemoval = true)
+    @JoinColumn(name = "emotional_diary_id")  // MentalRoutineRecord 테이블에 이 외래키 컬럼이 생성됨
     private EmotionalDiary emotionalDiary;
 
     @Builder

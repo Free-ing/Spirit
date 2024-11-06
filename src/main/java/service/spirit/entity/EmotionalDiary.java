@@ -37,8 +37,7 @@ public class EmotionalDiary extends BaseEntity {
 
     private LocalDate routineDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "mental_routine_record_id")
+    @OneToOne(mappedBy = "emotionalDiary")  // MentalRoutineRecord의 emotionalDiary 필드가 관계의 주인
     private MentalRoutineRecord mentalRoutineRecord;
 
 
@@ -78,5 +77,12 @@ public class EmotionalDiary extends BaseEntity {
 //            aiLetter.setEmotionalDiary(this);
 //        }
 //    }
+
+    public void setMentalRoutineRecord(MentalRoutineRecord mentalRoutineRecord) {
+        this.mentalRoutineRecord = mentalRoutineRecord;
+        if (mentalRoutineRecord != null) {
+            mentalRoutineRecord.setEmotionalDiary(this);
+        }
+    }
 
 }

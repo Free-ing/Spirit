@@ -82,6 +82,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
         mentalRoutineRepository.delete(mentalRoutine);
+
+
     }
 
     //Todo: 감정일기 삭제
@@ -90,7 +92,13 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(diaryId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
 
+        MentalRoutineRecord record = emotionalDiary.getMentalRoutineRecord();
+        if (record != null) {
+            record.setEmotionalDiary(null);
+        }
         emotionalDiaryRepository.delete(emotionalDiary);
+
+
     }
 
     //Todo: ai 편지 삭제
@@ -108,7 +116,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
-    //Todo : 마음 채우기 수정
+    //Todo : 마음 채우기 수정1
     @Override
     public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto){
         MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
@@ -302,7 +310,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
                 .explanation(explanation)
                 .startTime(startTime)
                 .endTime(endTime)
-                .status(true)
+                .status(false)
                 .imageUrl(imageUrl)
                 .basicService(spiritType)
                 .build();

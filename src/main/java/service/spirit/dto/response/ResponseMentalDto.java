@@ -79,7 +79,7 @@ public class ResponseMentalDto {
         private String Name;
         private String imageUrl;
         private Long routineId;
-        private Boolean monthday;
+        private Boolean monday;
         private Boolean tuesday;
         private Boolean wednesday;
         private Boolean thursday;
