@@ -10,18 +10,10 @@ import service.spirit.entity.EmotionalDiary;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EmotionalDiaryRepository extends JpaRepository<EmotionalDiary,Long> {
-
-    @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DiaryDateDto(ed.routineDate, ed.emotion,ed.id) " +
-            "FROM EmotionalDiary ed " +
-            "WHERE YEAR(ed.routineDate) = :year " +
-            "AND MONTH(ed.routineDate) = :month " +
-            "AND ed.userId = :userId")
-    List<ResponseMentalDto.DiaryDateDto> getRecordListByDate(@Param("year") int year,
-                                                             @Param("month") int month,
-                                                             @Param("userId") Long userId);
 
     List<EmotionalDiary> findByUserId(Long userId);
 
@@ -32,4 +24,5 @@ public interface EmotionalDiaryRepository extends JpaRepository<EmotionalDiary,L
     List<ResponseMentalDto.EmotionalDiaryDto> getScrapEmotionalDiary(@Param("userId") Long userId, @Param("scrap") Boolean scarp);
 
 
+    Optional<EmotionalDiary> findByIdAndUserId(Long id, Long userId);
 }

@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.request.MentalDto;
+import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.*;
 import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
@@ -201,7 +202,14 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     }
 
+    //Todo: 감정일기 수정
+    @Override
+    public void updateEmotionalDiary(Long userId, Long recordId, MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(recordId, userId)
+                .orElseThrow(()-> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
 
+        emotionalDiary.updateDiary(emotionalDiaryDto);
+    }
 
 
 

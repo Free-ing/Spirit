@@ -6,6 +6,7 @@ import org.springframework.data.repository.query.Param;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.MentalRoutine;
 import service.spirit.entity.MentalRoutineRecord;
+import service.spirit.entity.SpiritType;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,4 +38,22 @@ public interface MentalRoutineRecordRepository extends JpaRepository<MentalRouti
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate
     );
+
+
+    @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DiaryDateDto(" +
+            "mr.routineDate, " +
+            "mr.emotionalDiary.emotion, " +
+            "mr.emotionalDiary.id, " +
+            "mr.id) " +  // mentalRoutineRecord.id를 직접 전달
+            "FROM MentalRoutineRecord mr " +
+            "WHERE YEAR(mr.routineDate) = :year " +
+            "AND MONTH(mr.routineDate) = :month " +
+            "AND mr.userId = :userId " +
+            "AND mr.mentalRoutine.basicService = :spiritType AND mr.status = true")
+    List<ResponseMentalDto.DiaryDateDto> getRecordListByDate(
+            @Param("year") int year,
+            @Param("month") int month,
+            @Param("userId") Long userId,
+            @Param("spiritType") SpiritType spiritType);
 }
+

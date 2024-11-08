@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import service.spirit.base.BaseEntity;
+import service.spirit.dto.request.MentalDto;
+import service.spirit.dto.response.ResponseMentalDto;
 
 import java.time.LocalDate;
 
@@ -78,6 +80,12 @@ public class EmotionalDiary extends BaseEntity {
 //        }
 //    }
 
+
+    public void updateDiary(MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto) {
+        this.goodContent = emotionalDiaryDto.getWellDone();
+        this.badContent = emotionalDiaryDto.getHardWork();
+        this.emotion = emotionalDiaryDto.getEmotion();
+    }
     public void setMentalRoutineRecord(MentalRoutineRecord mentalRoutineRecord) {
         this.mentalRoutineRecord = mentalRoutineRecord;
         if (mentalRoutineRecord != null) {

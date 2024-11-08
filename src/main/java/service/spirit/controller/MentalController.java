@@ -94,19 +94,29 @@ public class MentalController {
         return BaseResponse.onSuccess(mentalQueryService.getSpiritRoutineList(userId));
     }
 
-    // Todo: 감정일기 존재하는지 리스트 조회
+//    // Todo: 감정일기 존재하는지 리스트 조회
+//    @GetMapping("/emotional-record-list")
+//    public BaseResponse<List<ResponseMentalDto.DiaryDateDto>> getEmotionalDiaryList(
+//            @RequestParam int year,
+//            @RequestParam int month,
+//            @RequestHeader("Authorization") String authorizationHeader
+//
+//    ){
+//        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+//        System.out.println(userId);
+//        return BaseResponse.onSuccess(mentalQueryService.getDiaryDate(year,month,userId));
+//    }
+
+    // Todo: 월별 감정일기 일정 존재하는지 리스트 조회
     @GetMapping("/emotional-record-list")
-    public BaseResponse<List<ResponseMentalDto.DiaryDateDto>> getEmotionalDiaryList(
+    public BaseResponse<List<ResponseMentalDto.DiaryDateDto>> getEmotionalDiaryRecordList(
             @RequestParam int year,
             @RequestParam int month,
             @RequestHeader("Authorization") String authorizationHeader
-
-    ){
+    ) {
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
-        System.out.println(userId);
-        return BaseResponse.onSuccess(mentalQueryService.getDiaryDate(year,month,userId));
+        return BaseResponse.onSuccess(mentalQueryService.getDiaryRecordDate(year, month, userId));
     }
-
 
     //Todo: 감정일기 조회
     @GetMapping("/emotional-record/{diaryId}")
@@ -314,13 +324,14 @@ public class MentalController {
 
 
         //Todo: 하나라도 수행한 일정이 있다면 조회하는 그 날짜 반환하기
-
-        @GetMapping("/home/record-week/{userId}")
+        @GetMapping("/home/record-week")
         public BaseResponse<?> getDate(
                 @RequestParam LocalDate startDate,
                 @RequestParam LocalDate endDate,
-                @PathVariable Long userId
+                @RequestHeader("Authorization") String authorizationHeader
         ) {
+            Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
             List<ResponseMentalDto.DayCompleteRoutine> existingDates =
                     mentalQueryService.getCompleteDate(startDate, endDate, userId);
 
@@ -330,4 +341,20 @@ public class MentalController {
 
             return BaseResponse.onSuccess(existingDates);
         }
+
+    //Todo : 감정 일기 수정
+    @PutMapping("/emotional-record/{recordId}")
+    public BaseResponse<String> createDefaultRoutine(
+            @RequestBody MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto,
+            @PathVariable Long recordId,
+            @RequestHeader("Authorization") String authorizationHeader
+
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        mentalCommonService.updateEmotionalDiary(userId,recordId, emotionalDiaryDto);
+
+        return BaseResponse.onSuccess("성공적으로 감정일기를 수정하였습니다.");
+    }
+
 }

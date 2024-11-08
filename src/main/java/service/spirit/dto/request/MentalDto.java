@@ -45,6 +45,17 @@ public class MentalDto {
         private Long userId;
     }
 
+
+    @Getter
+    @Setter
+    @Builder
+    @AllArgsConstructor
+    public static class UpdateEmotionalDiaryDto{
+        private String wellDone;
+        private String hardWork;
+        private Emotion emotion;
+    }
+
     @Getter
     @Builder
     @AllArgsConstructor

@@ -1,6 +1,7 @@
 package service.spirit.service;
 
 import service.spirit.dto.request.MentalDto;
+import service.spirit.dto.response.ResponseMentalDto;
 
 import java.time.LocalDate;
 
@@ -43,6 +44,9 @@ public interface MentalCommonService {
 
     //Todo: 회원의 모든 마음채우기 데이터 삭제
     void deleteSpiritDate(Long userId);
+
+    //Todo: 감정일기 수정
+    void updateEmotionalDiary(Long userId, Long recordId, MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto);
 
     //Todo: 기본 기능 생성
     void createDefaultService(Long userId);

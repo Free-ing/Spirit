@@ -7,10 +7,7 @@ import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.dto.response.RoutineTrackerDto;
-import service.spirit.entity.AiLetter;
-import service.spirit.entity.EmotionalDiary;
-import service.spirit.entity.MentalRoutine;
-import service.spirit.entity.MentalRoutineRecord;
+import service.spirit.entity.*;
 import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
 import service.spirit.repository.MentalRoutineRecordRepository;
@@ -60,14 +57,21 @@ public class MentalQueryServiceImpl implements MentalQueryService{
 
     }
 
+//    //Todo: 감정일기 존재하는지 여부 조회
+//    @Override
+//    public List<ResponseMentalDto.DiaryDateDto> getDiaryDate(int year, int month, Long userId){
+//
+//        List<ResponseMentalDto.DiaryDateDto> List = emotionalDiaryRepository.getRecordListByDate(year, month,userId);
+//        System.out.println(List);
+//        return List;
+//    }
+
     //Todo: 감정일기 존재하는지 여부 조회
     @Override
-    public List<ResponseMentalDto.DiaryDateDto> getDiaryDate(int year, int month, Long userId){
-
-        List<ResponseMentalDto.DiaryDateDto> List = emotionalDiaryRepository.getRecordListByDate(year, month,userId);
-        System.out.println(List);
-        return List;
+    public List<ResponseMentalDto.DiaryDateDto> getDiaryRecordDate(int year, int month, Long userId) {
+        return mentalRoutineRecordRepository.getRecordListByDate(year, month, userId, SpiritType.DIARY);
     }
+
 
     // Todo: 감정일기 상세 조회 기능
     @Override

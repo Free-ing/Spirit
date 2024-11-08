@@ -1,10 +1,7 @@
 package service.spirit.dto.response;
 
 import ch.qos.logback.core.joran.event.BodyEvent;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.joda.time.DateTime;
 import service.spirit.entity.Emotion;
 import service.spirit.entity.SpiritType;
@@ -42,14 +39,21 @@ public class ResponseMentalDto {
         private String explanation;}
 
     @Getter
-    @AllArgsConstructor
-    @Builder
     @NoArgsConstructor
-    public static class DiaryDateDto{
-        private LocalDate date;
+    public static class DiaryDateDto {  // public으로 변경
+        private LocalDate routineDate;
         private Emotion emotion;
         private Long diaryId;
+        private Long recordId;
+
+        public DiaryDateDto(LocalDate routineDate, Emotion emotion, Long diaryId, Long recordId) {  // public 생성자
+            this.routineDate = routineDate;
+            this.emotion = emotion;
+            this.diaryId = diaryId;
+            this.recordId = recordId;
+        }
     }
+
     @Getter
     @AllArgsConstructor
     @Builder
