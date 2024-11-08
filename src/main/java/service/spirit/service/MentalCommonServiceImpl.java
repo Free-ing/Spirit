@@ -34,28 +34,38 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 마음 채우기 루틴 설정
     @Override
-    public Long addMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto) {
+    public Long addMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto, Long userId) {
 
+        MentalRoutine existRoutine = mentalRoutineRepository.findByUserIdAndMentalRoutineName(userId, mentalRoutineDto.getRoutineName());
+
+        if(existRoutine != null){
+            throw new RestApiException(RoutineErrorStatus.ROUTINE_ALREADY_EXIST);
+        }else{
         //마음 채우기 루틴 저장
         MentalRoutine mentalRoutine = mentalRoutineRepository.save(toMentalRoutine(mentalRoutineDto));
 
         //저장된 객체 반환
         return mentalRoutine.getId();
+        }
     }
 
     //Todo: 감정일기 작성
     @Override
     public Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto, Long recordId, Long userId) {
 
-        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(recordId,userId)
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(recordId, userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
-        //마음 채우기 루틴 저장
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.save(toEmotionalDiary(emotionalDiaryDto, mentalRoutineRecord.getRoutineDate(), mentalRoutineRecord));
+        if (mentalRoutineRecord.getEmotionalDiary() != null) {
+            throw new RestApiException(RoutineErrorStatus.DIARY_ALREADY_EXIST);
+        } else {
+            //마음 채우기 루틴 저장
+            EmotionalDiary emotionalDiary = emotionalDiaryRepository.save(toEmotionalDiary(emotionalDiaryDto, mentalRoutineRecord.getRoutineDate(), mentalRoutineRecord));
 
-        mentalRoutineRecord.setEmotionalDiary(emotionalDiary);
-        //저장된 객체 반환
-        return emotionalDiary.getId();
+            mentalRoutineRecord.setEmotionalDiary(emotionalDiary);
+            //저장된 객체 반환
+            return emotionalDiary.getId();
+        }
     }
 
     //Todo: 감정일기 스크랩하기

@@ -47,7 +47,7 @@ public class MentalController {
         ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
         mentalRoutineDto.setUserId(userId);
-        Long routineId = mentalCommonService.addMentalRoutine(mentalRoutineDto);
+        Long routineId = mentalCommonService.addMentalRoutine(mentalRoutineDto, userId);
         return BaseResponse.onSuccess(routineId);
     }
 

@@ -35,4 +35,6 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
     List<MentalRoutine> findActiveRoutines();
 
     Optional<MentalRoutine> findByIdAndUserId(Long id , Long userId);
+
+    MentalRoutine findByUserIdAndMentalRoutineName(Long userId, String routineName);
 }

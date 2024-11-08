@@ -7,7 +7,7 @@ import java.time.LocalDate;
 
 public interface MentalCommonService {
     //Todo: 마음 채우기 루틴 설정
-    Long addMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto);
+    Long addMentalRoutine(MentalDto.mentalRoutineDto mentalRoutineDto, Long userId);
 
     //Todo: 감정일기 작성
     Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto,Long recordId, Long userId);
