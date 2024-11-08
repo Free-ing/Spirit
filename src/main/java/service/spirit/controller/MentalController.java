@@ -63,7 +63,7 @@ public class MentalController {
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
 
         emotionalDiaryDto.setUserId(userId);
-        Long emotionalDiaryId = mentalCommonService.saveEmotionalDiary(emotionalDiaryDto,recordId);
+        Long emotionalDiaryId = mentalCommonService.saveEmotionalDiary(emotionalDiaryDto,recordId, userId);
 
         return BaseResponse.onSuccess(emotionalDiaryId);
     }
@@ -147,7 +147,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrap(recordId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrap(recordId, userId);
         return BaseResponse.onSuccess(diaryScrapId);
     }
 
@@ -158,7 +159,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrapCancel(recordId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        Long diaryScrapId = mentalCommonService.emotionalRecordDiaryScrapCancel(recordId,userId);
         return BaseResponse.onSuccess(diaryScrapId);
     }
 
@@ -169,7 +171,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        mentalCommonService.deleteMentalRoutine(routineId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalCommonService.deleteMentalRoutine(routineId, userId);
         return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
     }
 
@@ -180,7 +183,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        mentalCommonService.deleteEmotionalDiary(diaryId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalCommonService.deleteEmotionalDiary(diaryId,userId);
         return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
     }
 
@@ -191,7 +195,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        mentalCommonService.deleteAiLetter(letterId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalCommonService.deleteAiLetter(letterId, userId);
         return BaseResponse.onSuccess("성공적으로 삭제하였습니다.");
     }
 
@@ -204,7 +209,8 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ) {
-        mentalCommonService.updateMentalRoutine(routineId, mentalRoutineUpdateDto);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalCommonService.updateMentalRoutine(routineId, mentalRoutineUpdateDto, userId);
         return BaseResponse.onSuccess(routineId);
     }
 
@@ -212,22 +218,25 @@ public class MentalController {
     @PatchMapping("/{routineId}/on")
     public BaseResponse<String> onMentalRoutine(
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate date,
-            @PathVariable Long routineId
+            @PathVariable Long routineId,
+            @RequestHeader("Authorization") String authorizationHeader
+
     ){
-        System.out.println(date);
-        System.out.println(routineId);
-        System.out.println("실행중");
-        mentalCommonService.onMentalRoutine(routineId,date);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        mentalCommonService.onMentalRoutine(routineId,date,userId);
         return BaseResponse.onSuccess("성공적으로 루틴 일정을 켰습니다.");
     }
     //Todo: 마음채우기 루틴 끄기
     @PatchMapping("/{routineId}/off")
     public BaseResponse<String> offMentalRoutine(
             @RequestParam LocalDate date,
-            @PathVariable Long routineId
-    ){
+            @PathVariable Long routineId,
+            @RequestHeader("Authorization") String authorizationHeader
 
-        mentalCommonService.offMentalRoutine(routineId,date);
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalCommonService.offMentalRoutine(routineId,date,userId);
         return BaseResponse.onSuccess("성공적으로 루틴 일정을 껐습니다.");
     }
 
@@ -238,7 +247,9 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        mentalCommonService.completeRoutine(routineRecordId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        mentalCommonService.completeRoutine(routineRecordId, userId);
         return BaseResponse.onSuccess("성공적으로 루틴을 수행하였습니다.");
     }
 
@@ -249,7 +260,9 @@ public class MentalController {
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
-        mentalCommonService.cancelRoutine(routineRecordId);
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        mentalCommonService.cancelRoutine(routineRecordId, userId);
         return BaseResponse.onSuccess("성공적으로 루틴 수행 완료를 취소하였습니다.");
     }
 
@@ -343,16 +356,16 @@ public class MentalController {
         }
 
     //Todo : 감정 일기 수정
-    @PutMapping("/emotional-record/{recordId}")
+    @PutMapping("/emotional-record/{diaryId}")
     public BaseResponse<String> createDefaultRoutine(
             @RequestBody MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto,
-            @PathVariable Long recordId,
+            @PathVariable Long diaryId,
             @RequestHeader("Authorization") String authorizationHeader
 
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
 
-        mentalCommonService.updateEmotionalDiary(userId,recordId, emotionalDiaryDto);
+        mentalCommonService.updateEmotionalDiary(userId,diaryId, emotionalDiaryDto);
 
         return BaseResponse.onSuccess("성공적으로 감정일기를 수정하였습니다.");
     }

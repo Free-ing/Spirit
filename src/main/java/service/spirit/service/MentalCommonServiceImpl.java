@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 import service.spirit.base.exception.code.RestApiException;
 import service.spirit.base.exception.code.RoutineErrorStatus;
 import service.spirit.dto.request.MentalDto;
-import service.spirit.dto.response.ResponseMentalDto;
 import service.spirit.entity.*;
 import service.spirit.repository.AiLetterRepository;
 import service.spirit.repository.EmotionalDiaryRepository;
@@ -46,9 +45,9 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 감정일기 작성
     @Override
-    public Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto, Long recordId) {
+    public Long saveEmotionalDiary(MentalDto.emotionalDiaryDto emotionalDiaryDto, Long recordId, Long userId) {
 
-        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(recordId)
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(recordId,userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         //마음 채우기 루틴 저장
@@ -61,8 +60,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 감정일기 스크랩하기
     @Override
-    public Long emotionalRecordDiaryScrap(Long recordId){
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(recordId)
+    public Long emotionalRecordDiaryScrap(Long recordId, Long userId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(recordId, userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
         emotionalDiary.changeScrap(true);
         return emotionalDiary.getId();
@@ -70,8 +69,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 감정일기 스크랩 취소
     @Override
-    public Long emotionalRecordDiaryScrapCancel(Long recordId){
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(recordId)
+    public Long emotionalRecordDiaryScrapCancel(Long recordId, Long userId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(recordId,userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
         emotionalDiary.changeScrap(false);
         return emotionalDiary.getId();
@@ -79,8 +78,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 마음 채우기  루틴 삭제
     @Override
-    public void deleteMentalRoutine(Long routineId){
-        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+    public void deleteMentalRoutine(Long routineId,Long userId){
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId,userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
         mentalRoutineRepository.delete(mentalRoutine);
 
@@ -89,8 +88,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 감정일기 삭제
     @Override
-    public void deleteEmotionalDiary(Long diaryId){
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findById(diaryId)
+    public void deleteEmotionalDiary(Long diaryId, Long userId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(diaryId,userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
 
         MentalRoutineRecord record = emotionalDiary.getMentalRoutineRecord();
@@ -99,14 +98,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         }
         emotionalDiaryRepository.delete(emotionalDiary);
 
-
     }
 
     //Todo: ai 편지 삭제
     @Override
-    public void deleteAiLetter(Long letterId){
-        AiLetter aiLetter = aiLetterRepository.findById(letterId)
+    public void deleteAiLetter(Long letterId, Long userId){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByAiLetter_IdAndUserId(letterId, userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.AI_LETTER_NOT_FOUND));
+
+        AiLetter aiLetter = emotionalDiary.getAiLetter();
+
 
         EmotionalDiary diary = aiLetter.getEmotionalDiary();
         if (diary != null) {
@@ -117,10 +118,10 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
-    //Todo : 마음 채우기 수정1
+    //Todo : 마음 채우기 수정
     @Override
-    public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto){
-        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+    public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto, Long userId){
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId, userId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         mentalRoutine.update(mentalRoutineUpdateDto);
@@ -129,8 +130,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo : 마음 채우기 루틴 on
     @Override
-    public void onMentalRoutine(Long routineId, LocalDate today){
-        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+    public void onMentalRoutine(Long routineId, LocalDate today, Long userId){
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId,userId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         mentalRoutine.updateStatus(true);
@@ -146,8 +147,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo : 마음 채우기 루틴 off
     @Override
-    public void offMentalRoutine(Long routineId, LocalDate today) {
-        MentalRoutine mentalRoutine = mentalRoutineRepository.findById(routineId)
+    public void offMentalRoutine(Long routineId, LocalDate today, Long userId) {
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId,userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
         mentalRoutine.updateStatus(false);
 
@@ -162,8 +163,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 마음 채우기 일정 수행 완료
     @Override
-    public void completeRoutine(Long routineRecordId){
-        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(routineRecordId)
+    public void completeRoutine(Long routineRecordId, Long userId ){
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(routineRecordId, userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_RECORD_NOT_FOUND));
 
         //루틴 레코드 일정 완료 표시
@@ -173,8 +174,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo: 마음 채우기 일정 수행 완료 취소
     @Override
-    public void cancelRoutine(Long routineRecordId){
-        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findById(routineRecordId)
+    public void cancelRoutine(Long routineRecordId, Long userId){
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(routineRecordId, userId)
                 .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_RECORD_NOT_FOUND));
         mentalRoutineRecord.updateCompleteAndCompleteDate(false, null);
 
@@ -197,21 +198,41 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
 
         for (MentalRoutine mentalRoutine : mentalRoutineList) {
-            onMentalRoutine(mentalRoutine.getId(), LocalDate.now());
+            onMentalRoutine(mentalRoutine.getId(), LocalDate.now(), mentalRoutine.getUserId());
         }
 
     }
 
     //Todo: 감정일기 수정
     @Override
-    public void updateEmotionalDiary(Long userId, Long recordId, MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto){
-        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(recordId, userId)
+    public void updateEmotionalDiary(Long userId, Long diaryId, MentalDto.UpdateEmotionalDiaryDto emotionalDiaryDto){
+        EmotionalDiary emotionalDiary = emotionalDiaryRepository.findByIdAndUserId(diaryId, userId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.DIARY_NOT_FOUND));
 
         emotionalDiary.updateDiary(emotionalDiaryDto);
     }
 
 
+    //Todo: 기본 기능 생성
+    @Override
+    public void createDefaultService(Long userId) {
+        MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을\n 일기로 작성해보세요!\n 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
+                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/emotional_diary.png", SpiritType.DIARY);
+
+        MentalRoutine meditation = createMentalRoutine(userId, "명상하기", """
+                명상은 마음을 안정시키고 현재에 집중하는 정신 수련법입니다.\n\n 스트레스 해소, 불안 감소, 집중력 향상에 효과적이며, 규칙적인 명상은 정서적 안정과 수면의 질 향상에도 도움을 줍니다.\n\n 초보자도 하루 5-10분부터 시작할 수 있어 부담 없이 시작할 수 있어요!
+                """,
+                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/leaf_and_music.png",SpiritType.MEDITATION);
+
+
+//        1. 호흡 명상
+//        편안한 자세로 앉아 눈을 감고, 들숨과 날숨에 집중합니다. 호흡이 들어오고 나가는 것을 자연스럽게 관찰하며, 다른 생각이 들면 다시 호흡으로 주의를 가져옵니다.
+//
+//        2. 바디스캔 명상
+//        발끝부터 머리끝까지 차례로 신체 각 부위의 감각을 느끼며 이완합니다. 긴장된 부위가 있다면 호흡과 함께 그 긴장을 부드럽게 놓아주세요.
+        mentalRoutineRepository.save(diaryRoutine);
+        mentalRoutineRepository.save(meditation);
+    }
 
 
 
@@ -278,26 +299,6 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         };
     }
 
-    //Todo: 기본 기능 생성
-    @Override
-    public void createDefaultService(Long userId) {
-        MentalRoutine diaryRoutine = createMentalRoutine(userId, "감정일기 작성", "오늘 잘했던 일, 힘들었던 일을\n 일기로 작성해보세요!\n 작성 후 ai가 써주는 편지도 읽을 수 있어요.",
-                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/emotional_diary.png", SpiritType.DIARY);
-
-        MentalRoutine meditation = createMentalRoutine(userId, "명상하기", """
-                명상은 마음을 안정시키고 현재에 집중하는 정신 수련법입니다.\n\n 스트레스 해소, 불안 감소, 집중력 향상에 효과적이며, 규칙적인 명상은 정서적 안정과 수면의 질 향상에도 도움을 줍니다.\n\n 초보자도 하루 5-10분부터 시작할 수 있어 부담 없이 시작할 수 있어요!
-                """,
-                LocalTime.of(22, 0, 0), LocalTime.of(22, 30, 0), "https://freeingimage.s3.ap-northeast-2.amazonaws.com/leaf_and_music.png",SpiritType.MEDITATION);
-
-
-//        1. 호흡 명상
-//        편안한 자세로 앉아 눈을 감고, 들숨과 날숨에 집중합니다. 호흡이 들어오고 나가는 것을 자연스럽게 관찰하며, 다른 생각이 들면 다시 호흡으로 주의를 가져옵니다.
-//
-//        2. 바디스캔 명상
-//        발끝부터 머리끝까지 차례로 신체 각 부위의 감각을 느끼며 이완합니다. 긴장된 부위가 있다면 호흡과 함께 그 긴장을 부드럽게 놓아주세요.
-        mentalRoutineRepository.save(diaryRoutine);
-        mentalRoutineRepository.save(meditation);
-    }
 
 
 

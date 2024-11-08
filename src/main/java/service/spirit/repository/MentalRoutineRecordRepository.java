@@ -39,21 +39,24 @@ public interface MentalRoutineRecordRepository extends JpaRepository<MentalRouti
             @Param("endDate") LocalDate endDate
     );
 
-
     @Query("SELECT new service.spirit.dto.response.ResponseMentalDto$DiaryDateDto(" +
             "mr.routineDate, " +
             "mr.emotionalDiary.emotion, " +
             "mr.emotionalDiary.id, " +
-            "mr.id) " +  // mentalRoutineRecord.id를 직접 전달
+            "mr.id) " +
             "FROM MentalRoutineRecord mr " +
+            "LEFT JOIN mr.emotionalDiary " +
             "WHERE YEAR(mr.routineDate) = :year " +
             "AND MONTH(mr.routineDate) = :month " +
-            "AND mr.userId = :userId " +
-            "AND mr.mentalRoutine.basicService = :spiritType AND mr.status = true")
+            "AND mr.userId = :userId AND mr.status = true " +
+            "AND mr.mentalRoutine.basicService = :spiritType " +
+            "ORDER BY mr.routineDate ASC")  // 오름차순 정렬
     List<ResponseMentalDto.DiaryDateDto> getRecordListByDate(
             @Param("year") int year,
             @Param("month") int month,
             @Param("userId") Long userId,
             @Param("spiritType") SpiritType spiritType);
+
+    Optional<MentalRoutineRecord> findByIdAndUserId(Long id, Long userId);
 }
 

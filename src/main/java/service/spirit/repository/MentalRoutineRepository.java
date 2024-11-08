@@ -33,4 +33,6 @@ public interface MentalRoutineRepository extends JpaRepository<MentalRoutine,Lon
 
     @Query("SELECT mr FROM MentalRoutine mr WHERE mr.status = true")
     List<MentalRoutine> findActiveRoutines();
+
+    Optional<MentalRoutine> findByIdAndUserId(Long id , Long userId);
 }

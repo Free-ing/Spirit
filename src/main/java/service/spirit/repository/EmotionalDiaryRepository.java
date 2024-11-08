@@ -25,4 +25,6 @@ public interface EmotionalDiaryRepository extends JpaRepository<EmotionalDiary,L
 
 
     Optional<EmotionalDiary> findByIdAndUserId(Long id, Long userId);
+
+    Optional<EmotionalDiary> findByAiLetter_IdAndUserId(Long letterId, Long userId);
 }
