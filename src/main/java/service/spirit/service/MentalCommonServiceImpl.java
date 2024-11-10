@@ -245,6 +245,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
+    //Todo: 쉬어가기
+    @Override
+    public void offDayRecord(Long recordId, Long userId){
+        MentalRoutineRecord mentalRoutineRecord = mentalRoutineRecordRepository.findByIdAndUserId(recordId, userId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.RECORD_NOT_FOUND));
+
+        mentalRoutineRecord.offRoutineRecord();
+
+    }
+
 
     private void handleRoutineOff(MentalRoutine routine, LocalDate today, LocalDate endOfWeek) {
         LocalDate currentDate = today;

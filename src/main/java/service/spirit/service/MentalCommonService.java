@@ -50,4 +50,7 @@ public interface MentalCommonService {
 
     //Todo: 기본 기능 생성
     void createDefaultService(Long userId);
+
+    //Todo: 쉬어가기
+    void offDayRecord(Long recordId, Long userId);
 }

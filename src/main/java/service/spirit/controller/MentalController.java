@@ -370,4 +370,19 @@ public class MentalController {
         return BaseResponse.onSuccess("성공적으로 감정일기를 수정하였습니다.");
     }
 
+    //Todo : 쉬어가기
+    @PatchMapping("/record-off/{recordId}")
+    public BaseResponse<String> offTodayRecord(
+            @PathVariable Long recordId,
+            @RequestHeader("Authorization") String authorizationHeader
+
+    ){
+        Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+
+        mentalCommonService.offDayRecord(recordId, userId);
+
+        return BaseResponse.onSuccess("성공적으로 루틴 쉬어가기를 완료했습니다.");
+
+    }
+
 }

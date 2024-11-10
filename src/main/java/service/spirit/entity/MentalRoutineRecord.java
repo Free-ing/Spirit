@@ -59,4 +59,8 @@ public class MentalRoutineRecord extends BaseEntity {
     public void setEmotionalDiary(EmotionalDiary emotionalDiary){
         this.emotionalDiary = emotionalDiary;
     }
+
+    public void offRoutineRecord(){
+        this.status = false;
+    }
 }
