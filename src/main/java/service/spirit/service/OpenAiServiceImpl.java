@@ -20,7 +20,8 @@ import java.util.List;
 @Transactional
 @RequiredArgsConstructor
 public class OpenAiServiceImpl implements OpenAiService{
-    private final ChatClient chatClient;
+    private final ChatClient letterChatClient;
+    private final ChatClient letterWriterExpert;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
     private final AiLetterRepository aiLetterRepository;
     private final TranslationService translationService;
@@ -42,19 +43,21 @@ public class OpenAiServiceImpl implements OpenAiService{
         String userMessageContent = String.format("\n" +
                 "Please write a letter to your friend based on the following diary entry. Good job: %s / Bad job: %s", diary1,diary2);
 
-        String jsonResponse = chatClient.prompt()
+        String jsonResponse1 = letterChatClient.prompt()
                 .user(userMessageContent)
                 .call()
                 .content();
 
+        System.out.println(jsonResponse1);
+
+
 
 //        String translatedContent = translationService.translateToKorean(jsonResponse);
-        System.out.println(jsonResponse);
 
 
         //ai 편지 객체 만들기
         AiLetter aiLetter  = AiLetter.builder()
-                .content(jsonResponse)
+                .content(jsonResponse1)
                 .emotionalDiary(emotionalDiary)
                 .build();
 
@@ -65,12 +68,5 @@ public class OpenAiServiceImpl implements OpenAiService{
 
         return aiLetter.getId();
 
-//        try {
-//            // JSON 배열을 List<AiHobbyResponseDto>로 직접 파싱
-//            return objectMapper.readValue(jsonResponse,
-//                    objectMapper.getTypeFactory().constructCollectionType(List.class, MentalDto.AiLetterDto.class));
-//        } catch (Exception e) {
-//            throw new RuntimeException("Failed to parse AI response", e);
-//        }
     }
 }

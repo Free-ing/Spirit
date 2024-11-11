@@ -16,6 +16,7 @@ import service.spirit.repository.MentalRoutineRepository;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 import java.util.Optional;
 
@@ -130,11 +131,14 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo : 마음 채우기 수정
     @Override
-    public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto, Long userId){
+    public void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto, Long userId, LocalDate today){
         MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId, userId)
                 .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         mentalRoutine.update(mentalRoutineUpdateDto);
+
+        offMentalRoutine(routineId, today, userId);
+        onMentalRoutine(routineId, today, userId);
 
     }
 
@@ -150,7 +154,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
         LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
-        handleRoutineOn(mentalRoutine, today, endOfWeek);
+        handleRoutineOn(mentalRoutine, today);
 
         mentalRoutineRepository.save(mentalRoutine);
     }
@@ -274,9 +278,12 @@ public class MentalCommonServiceImpl implements MentalCommonService {
             currentDate = currentDate.plusDays(1);
         }
     }
-    private void handleRoutineOn(MentalRoutine routine, LocalDate today, LocalDate endOfWeek) {
+    private void handleRoutineOn(MentalRoutine routine, LocalDate today) {
         // 현재 날짜부터 이번 주 일요일까지의 날짜들에 대해 처리
         LocalDate currentDate = today;
+        LocalDate endOfWeek = today.plusWeeks(4)  // 4주 추가
+                .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));  // 일요일로 조정
+
         while (!currentDate.isAfter(endOfWeek )) {
             // 해당 요일에 대한 루틴 설정이 되어있는지 확인
             if (isDayEnabled(routine, currentDate)) {

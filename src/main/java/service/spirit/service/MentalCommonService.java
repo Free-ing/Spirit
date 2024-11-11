@@ -28,7 +28,7 @@ public interface MentalCommonService {
     void deleteAiLetter(Long letterId, Long userId);
 
     //Todo : 마음 채우기 수정
-    void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto, Long userId);
+    void updateMentalRoutine(Long routineId, MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto, Long userId,LocalDate today);
 
     //Todo : 마음 채우기 루틴 on
     void onMentalRoutine(Long routineId, LocalDate today, Long userId);

@@ -206,11 +206,12 @@ public class MentalController {
     public BaseResponse<Long> updateMentalRoutine(
             @PathVariable Long routineId,
             @RequestBody MentalDto.mentalRoutineUpdateDto mentalRoutineUpdateDto,
+            @RequestParam LocalDate today,
             @RequestHeader("Authorization") String authorizationHeader
 
     ) {
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
-        mentalCommonService.updateMentalRoutine(routineId, mentalRoutineUpdateDto, userId);
+        mentalCommonService.updateMentalRoutine(routineId, mentalRoutineUpdateDto, userId, today);
         return BaseResponse.onSuccess(routineId);
     }
 
@@ -324,6 +325,7 @@ public class MentalController {
 
     ){
         Long userId = tokenProviderService.getUserIdFromToken(authorizationHeader);
+        mentalQueryService.getLetter(letterId);
         return BaseResponse.onSuccess(mentalQueryService.getLetter(letterId));
     }
 
