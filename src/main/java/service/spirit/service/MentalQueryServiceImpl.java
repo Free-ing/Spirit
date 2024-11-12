@@ -109,8 +109,12 @@ public class MentalQueryServiceImpl implements MentalQueryService{
             if (!routine.getMentalRoutineRecordList().isEmpty()) {  // 레코드가 있는 경우만 처리
                 RoutineTrackerDto.MentalRoutineTrackerDto trackerDto =
                         routineMap.computeIfAbsent(routine.getMentalRoutineName(),
-                                k -> new RoutineTrackerDto.MentalRoutineTrackerDto(routine.getMentalRoutineName()));
-
+                                k -> {
+                                    RoutineTrackerDto.MentalRoutineTrackerDto dto =
+                                            new RoutineTrackerDto.MentalRoutineTrackerDto(routine.getMentalRoutineName());
+                                    dto.setImageUrl(routine.getImageUrl()); // 이미지 URL 설정
+                                    return dto;
+                                });
                 for (MentalRoutineRecord record : routine.getMentalRoutineRecordList()) {
                     trackerDto.addRecord(new RoutineTrackerDto.MentalRecordDto(
                             record.getId(),
