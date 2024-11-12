@@ -137,8 +137,8 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
         mentalRoutine.update(mentalRoutineUpdateDto);
 
-        offMentalRoutine(routineId, today, userId);
-        onMentalRoutine(routineId, today, userId);
+        offMentalRoutine(mentalRoutine.getId(), today, userId);
+        onMentalRoutine(mentalRoutine.getId(), today, userId);
 
     }
 
@@ -170,7 +170,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 //        LocalDate today = LocalDate.now();
         LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
-        handleRoutineOff(mentalRoutine, today, endOfWeek);
+        handleRoutineOff(mentalRoutine, today);
 
         mentalRoutineRepository.save(mentalRoutine);
     }
@@ -260,8 +260,9 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
-    private void handleRoutineOff(MentalRoutine routine, LocalDate today, LocalDate endOfWeek) {
+    private void handleRoutineOff(MentalRoutine routine, LocalDate today) {
         LocalDate currentDate = today;
+        LocalDate endOfWeek = today.plusWeeks(4);  // 4주 추가
         while (!currentDate.isAfter(endOfWeek)) {
             // routineDate로 레코드를 찾아야 함
             Optional<MentalRoutineRecord> existingRecord = mentalRoutineRecordRepository
