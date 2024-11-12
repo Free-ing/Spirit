@@ -58,5 +58,15 @@ public interface MentalRoutineRecordRepository extends JpaRepository<MentalRouti
             @Param("spiritType") SpiritType spiritType);
 
     Optional<MentalRoutineRecord> findByIdAndUserId(Long id, Long userId);
+
+    Optional<MentalRoutineRecord> findTopByMentalRoutineAndStatusOrderByRoutineDateDesc(
+            MentalRoutine mentalRoutine,
+            Boolean status
+    );
+
+    List<MentalRoutineRecord> findByMentalRoutineAndRoutineDateGreaterThanEqual(
+            MentalRoutine mentalRoutine,
+            LocalDate routineDate
+    );
 }
 

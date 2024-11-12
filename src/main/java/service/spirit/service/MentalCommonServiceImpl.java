@@ -144,17 +144,33 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
     //Todo : 마음 채우기 루틴 on
     @Override
-    public void onMentalRoutine(Long routineId, LocalDate today, Long userId){
-        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId,userId)
-                .orElseThrow(()-> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
+    public void onMentalRoutine(Long routineId, LocalDate today, Long userId) {
+        MentalRoutine mentalRoutine = mentalRoutineRepository.findByIdAndUserId(routineId, userId)
+                .orElseThrow(() -> new RestApiException(RoutineErrorStatus.ROUTINE_NOT_FOUND));
 
         mentalRoutine.updateStatus(true);
-        // 현재 날짜 정보 가져오기
-//        LocalDate today = LocalDate.now();
-        LocalDate startOfWeek = today.with(DayOfWeek.MONDAY);
-        LocalDate endOfWeek = today.with(DayOfWeek.SUNDAY);
 
-        handleRoutineOn(mentalRoutine, today);
+        // today 날짜에 해당하는 루틴 레코드가 있는지 확인
+        List<MentalRoutineRecord> existingRecords = mentalRoutineRecordRepository
+                .findByMentalRoutineAndRoutineDateGreaterThanEqual(mentalRoutine, today);
+
+        if (existingRecords.isEmpty()) {
+            // 레코드가 없는 경우: 4주 후까지 새로 생성
+            LocalDate endOfWeek = today.plusWeeks(4)
+                    .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));
+            handleRoutineOn(mentalRoutine, today, endOfWeek);
+        } else {
+            // 레코드가 있는 경우: 활성화된 요일의 레코드만 status를 true로 업데이트
+            existingRecords.forEach(record -> {
+                if (isDayEnabled(mentalRoutine, record.getRoutineDate())) {
+                    record.updateStatus(true);
+                    mentalRoutineRecordRepository.save(record);
+                } else {
+                    record.updateStatus(false);
+                    mentalRoutineRecordRepository.save(record);
+                }
+            });
+        }
 
         mentalRoutineRepository.save(mentalRoutine);
     }
@@ -260,6 +276,56 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
+    //Todo: 활성화된 루틴 매주 일정이 자동으로 생기도록 설정
+    @Scheduled(cron = "0 9 14 ? * TUE")  // 매주 화요일 14:03에 실행
+    public void autoCreateRoutineRecord() {
+        try {
+            List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
+            System.out.println("스케줄러 실행: 활성화된 루틴 수 = " + mentalRoutineList.size());
+
+            for (MentalRoutine mentalRoutine : mentalRoutineList) {
+                try {
+                    System.out.println("처리 중인 루틴: " + mentalRoutine.getMentalRoutineName());
+
+                    // 해당 루틴의 가장 최근 routineRecord 찾기
+                    Optional<MentalRoutineRecord> latestRecord = mentalRoutineRecordRepository
+                            .findTopByMentalRoutineAndStatusOrderByRoutineDateDesc(mentalRoutine, true);
+
+                    if (latestRecord.isEmpty()) {
+                        System.out.println("최근 기록 없음 - 현재 날짜부터 시작");
+                        LocalDate startDate = LocalDate.now();
+                        LocalDate endDate = startDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+                        handleRoutineOn(mentalRoutine, startDate, endDate);
+                        continue;
+                    }
+
+                    LocalDate startDate = latestRecord.get().getRoutineDate().plusDays(1);
+                    LocalDate endDate = startDate.with(TemporalAdjusters.next(DayOfWeek.SUNDAY));
+
+                    System.out.println("루틴 레코드 생성 - 시작일: " + startDate + ", 종료일: " + endDate);
+
+                    // 날짜 유효성 검사
+                    if (startDate.isAfter(endDate)) {
+                        System.out.println("시작일이 종료일보다 늦음 - 스킵");
+                        continue;
+                    }
+
+                    handleRoutineOn(mentalRoutine, startDate, endDate);
+                    System.out.println("루틴 레코드 생성 완료: " + mentalRoutine.getMentalRoutineName());
+
+                } catch (Exception e) {
+                    System.err.println("루틴 처리 중 오류 발생: " + mentalRoutine.getMentalRoutineName());
+                    e.printStackTrace();
+                    // 한 루틴의 실패가 다른 루틴 처리를 중단시키지 않도록 continue
+                    continue;
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("자동 루틴 생성 중 오류 발생");
+            e.printStackTrace();
+        }
+    }
+
     private void handleRoutineOff(MentalRoutine routine, LocalDate today) {
         LocalDate currentDate = today;
         LocalDate endOfWeek = today.plusWeeks(4);  // 4주 추가
@@ -279,11 +345,9 @@ public class MentalCommonServiceImpl implements MentalCommonService {
             currentDate = currentDate.plusDays(1);
         }
     }
-    private void handleRoutineOn(MentalRoutine routine, LocalDate today) {
+    private void handleRoutineOn(MentalRoutine routine, LocalDate today, LocalDate endOfWeek) {
         // 현재 날짜부터 이번 주 일요일까지의 날짜들에 대해 처리
         LocalDate currentDate = today;
-        LocalDate endOfWeek = today.plusWeeks(4)  // 4주 추가
-                .with(TemporalAdjusters.nextOrSame(DayOfWeek.SUNDAY));  // 일요일로 조정
 
         while (!currentDate.isAfter(endOfWeek )) {
             // 해당 요일에 대한 루틴 설정이 되어있는지 확인

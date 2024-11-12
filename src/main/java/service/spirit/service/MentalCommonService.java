@@ -33,6 +33,7 @@ public interface MentalCommonService {
     //Todo : 마음 채우기 루틴 on
     void onMentalRoutine(Long routineId, LocalDate today, Long userId);
 
+
     //Todo : 마음 채우기 루틴 off
     void offMentalRoutine(Long routineId, LocalDate today, Long userId);
 
