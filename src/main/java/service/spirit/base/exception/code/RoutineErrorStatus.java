@@ -10,7 +10,7 @@ public enum RoutineErrorStatus implements BaseErrorCodeInterface {
     RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4003", "존재하지 않는 취미 기록입니다."),
     ROUTINE_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4004", "존재하지 않는 루틴입니다."),
     ROUTINE_RECORD_NOT_FOUND(HttpStatus.BAD_REQUEST, "MENTAL_4005", "존재하지 않는 일정입니다."),
-
+    MUST_EXIST_ONE_TRUE(HttpStatus.BAD_REQUEST, "MENTAL_4006", "요일 중에 최소한 하나는 TRUE 이어야 합니다."),
 
     AI_LETTER_NOT_FOUND(HttpStatus.BAD_REQUEST, "DIARY_4001", "존재하지 않는 ai 편지입니다."),
     DIARY_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "DIARY_4002", "이미 감정일기를 추가하였습니다."),

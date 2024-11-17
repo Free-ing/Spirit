@@ -42,11 +42,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
         if(existRoutine != null){
             throw new RestApiException(RoutineErrorStatus.ROUTINE_ALREADY_EXIST);
         }else{
-        //마음 채우기 루틴 저장
-        MentalRoutine mentalRoutine = mentalRoutineRepository.save(toMentalRoutine(mentalRoutineDto));
+            validateWeekdaySelection(mentalRoutineDto);
 
-        //저장된 객체 반환
-        return mentalRoutine.getId();
+              //마음 채우기 루틴 저장
+           MentalRoutine mentalRoutine = mentalRoutineRepository.save(toMentalRoutine(mentalRoutineDto));
+
+
+            onMentalRoutine(mentalRoutine.getId(), LocalDate.now(),userId);
+            //저장된 객체 반환
+
+            return mentalRoutine.getId();
         }
     }
 
@@ -222,16 +227,16 @@ public class MentalCommonServiceImpl implements MentalCommonService {
     }
 
 
-    //Todo: routine이 on인 건 자동으로 일정 생성되게 하기
-    @Scheduled(cron = "0 1 0 ? * MON")
-    public void createRoutineRecord() {
-        List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
-
-        for (MentalRoutine mentalRoutine : mentalRoutineList) {
-            onMentalRoutine(mentalRoutine.getId(), LocalDate.now(), mentalRoutine.getUserId());
-        }
-
-    }
+//    //Todo: routine이 on인 건 자동으로 일정 생성되게 하기
+//    @Scheduled(cron = "0 1 0 ? * MON")
+//    public void createRoutineRecord() {
+//        List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
+//
+//        for (MentalRoutine mentalRoutine : mentalRoutineList) {
+//            onMentalRoutine(mentalRoutine.getId(), LocalDate.now(), mentalRoutine.getUserId());
+//        }
+//
+//    }
 
     //Todo: 감정일기 수정
     @Override
@@ -277,7 +282,7 @@ public class MentalCommonServiceImpl implements MentalCommonService {
 
 
     //Todo: 활성화된 루틴 매주 일정이 자동으로 생기도록 설정
-    @Scheduled(cron = "0 9 14 ? * TUE")  // 매주 화요일 14:03에 실행
+    @Scheduled(cron = "0 15 0 ? * MON")  // 매주 화요일 14:03에 실행
     public void autoCreateRoutineRecord() {
         try {
             List<MentalRoutine> mentalRoutineList = mentalRoutineRepository.findActiveRoutines();
@@ -416,4 +421,20 @@ public class MentalCommonServiceImpl implements MentalCommonService {
                 .basicService(spiritType)
                 .build();
     }
+
+    private void validateWeekdaySelection(MentalDto.mentalRoutineDto mentalRoutineDto) {
+        boolean hasSelectedDay = mentalRoutineDto.getMonday() ||
+                mentalRoutineDto.getTuesday() ||
+                mentalRoutineDto.getWednesday() ||
+                mentalRoutineDto.getThursday() ||
+                mentalRoutineDto.getFriday() ||
+                mentalRoutineDto.getSaturday() ||
+                mentalRoutineDto.getSunday();
+
+        if (!hasSelectedDay) {
+            throw new RestApiException(RoutineErrorStatus.MUST_EXIST_ONE_TRUE);
+        }
+    }
 }
+
+
