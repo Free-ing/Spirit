@@ -21,7 +21,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OpenAiServiceImpl implements OpenAiService{
     private final ChatClient letterChatClient;
-    private final ChatClient letterWriterExpert;
+    private final ChatClient koreanChatClient;
     private final EmotionalDiaryRepository emotionalDiaryRepository;
     private final AiLetterRepository aiLetterRepository;
     private final TranslationService translationService;
@@ -48,16 +48,14 @@ public class OpenAiServiceImpl implements OpenAiService{
                 .call()
                 .content();
 
+
+        //어색하지 않게 ai가  한국어 수정
+        String returnFeedback =  refineKoreanFeedback(jsonResponse1);
         System.out.println(jsonResponse1);
-
-
-
-//        String translatedContent = translationService.translateToKorean(jsonResponse);
-
 
         //ai 편지 객체 만들기
         AiLetter aiLetter  = AiLetter.builder()
-                .content(jsonResponse1)
+                .content(returnFeedback)
                 .emotionalDiary(emotionalDiary)
                 .build();
 
@@ -69,4 +67,12 @@ public class OpenAiServiceImpl implements OpenAiService{
         return aiLetter.getId();
 
     }
+
+    private String refineKoreanFeedback(String translatedFeedback) {
+        String refinementPrompt = String.format(
+                "Please review the following Korean feedback carefully and adjust it to make the language sound natural, warm, and friendly, as if speaking to a friend. Please avoid using symbols like '*' and '#'. For emphasis, feel free to use emojis or adjust the tone instead. Korean feedback: \"%s\"", translatedFeedback);
+
+        return koreanChatClient.prompt(refinementPrompt).call().content();
+    }
+
 }
